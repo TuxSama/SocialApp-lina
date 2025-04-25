@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bootstrap Layout</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            min-height: 100vh;
+            background: linear-gradient(to bottom, #6a55d2, #a2a4db);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .search-bar {
+            margin-top: 20px;
+            border-radius: 30px;
+            width: 80%;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            background-color: white;
+            padding: 10px;
+        }
+
+        .user-card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 400px;
+            margin: 20px auto;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .user-card img {
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: #f1f1f1;
+            padding: 10px;
+            display: flex;
+            justify-content: space-around;
+            border-top: 1px solid #ccc;
+        }
+
+        .bottom-nav .nav-item {
+            font-size: 24px;
+            color: #333;
+        }
+
+        .bottom-nav .nav-item.active {
+            color: #007bff;
+        }
+
+        .bottom-nav .nav-item .btn {
+            border-radius: 50%;
+            background-color: #007bff;
+            color: white;
+        }
+
+        .nav {
+            width: 100vw;
+            z-index: 999;
+            position: fixed;
+            bottom: 30px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .nav-bar {
+            background-color: #0000009f;
+            border-radius: 6px;
+
+        }
+
+        .nav-bar img[src$=".svg"] {
+            filter: invert(1);
+
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Search Bar -->
+    <div class="search-bar d-flex">
+        <input type="text" class="form-control" placeholder="Rechercher" aria-label="Search">
+        <button class="btn btn-light ml-2"><i class="bi bi-search"></i></button>
+    </div>
+
+    <!-- User Card -->
+    <div class="user-card">
+        <img src="/assets/img/avatar.png" alt="User Avatar">
+        <div class="user-info">
+            <h5>shaun</h5>
+            <p>@shaun</p>
+        </div>
+        <button class="btn btn-sm btn-light">
+            <i class="bi bi-x"></i>
+        </button>
+    </div>
+    <div class="user-card">
+        <img src="/assets/img/avatar.png" alt="User Avatar">
+        <div class="user-info">
+            <h5>oussama baih</h5>
+            <p>@usama</p>
+        </div>
+        <button class="btn btn-sm btn-light">
+            <i class="bi bi-x"></i>
+        </button>
+    </div>
+    <div class="nav">
+        <div class="container rouneded  nav-bar d-flex justify-content-between align-items-center">
+            <a href=""><img src="/assets/img/maison.svg" width="24"></a>
+            <a href=""><img src="/assets/img/chercher.svg" width="24"></a>
+            <a href="">
+                <div class="btn btn-primary m-1"><img src="/assets/img/add-icon.svg" width="24"></div>
+            </a>
+            <a href=""><img src="/assets/img/play.svg" width="24"></a>
+            <a href=""><img src="/assets/img/planp.svg" width="24"></a>
+        </div>
+    </div>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+</body>
+
+</html>

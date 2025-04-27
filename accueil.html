@@ -3,8 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lina Social Feed</title>
+  <title>Feed</title>
+  <script type="module" src="./js/firebase.js"></script>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
   <style>
     body {
       background: linear-gradient(to bottom, #6a4fff, #ffffff);
@@ -16,14 +18,17 @@
       border-radius: 50%;
     }
     .story-img {
-      width: 60px;
-      height: 60px;
+      width: 80px;
+      height: 120px;
       border-radius: 10px;
       object-fit: cover;
       border: 2px solid #fff;
     }
+
     .story-container {
       margin-top: 10px;
+      overflow-x: scroll;
+      scrollbar-width:none;
     }
     .post-img {
       max-width: 100%;
@@ -51,7 +56,7 @@
     .nav {
             width: 100vw;
             z-index: 999;
-            position: fixed;
+            position: sticky;
             bottom: 30px;
             display: flex;
             justify-content: center;
@@ -92,11 +97,11 @@
      
       <!-- Stories (Square Images) -->
       <div class="d-flex story-container">
-        <img src="" alt="Story 1" class="story-img me-2">
-        <img src="" alt="Story 2" class="story-img me-2">
-        <img src="" alt="Story 3" class="story-img me-2">
-        <img src="" alt="Story 4" class="story-img me-2">
-        <img src="" alt="Story 5" class="story-img me-2">
+        <img src="https://images.unsplash.com/photo-1745500415839-503883982264?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Story 1" class="story-img me-2">
+        <img src="https://plus.unsplash.com/premium_photo-1741194732641-eca20483c388?q=80&w=988&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Story 2" class="story-img me-2">
+        <img src="https://images.unsplash.com/photo-1745337014221-bbbd3bf4581a?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxNXx8fGVufDB8fHx8fA%3D%3D" alt="Story 3" class="story-img me-2">
+        <img src="https://plus.unsplash.com/premium_photo-1668650610258-043278428a93?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxOXx8fGVufDB8fHx8fA%3D%3D" alt="Story 4" class="story-img me-2">
+        <img src="https://plus.unsplash.com/premium_photo-1721076216291-063e5f9d3141?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyNXx8fGVufDB8fHx8fA%3D%3D" alt="Story 5" class="story-img me-2">
       </div>
     </div>
   </div>

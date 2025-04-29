@@ -42,10 +42,17 @@
         }
     </style>
 </head>
+
 <body id="splash">
-    
+
     <img src="./assets/img/logo.svg" alt="logo" width="100">
     <div class="loader"></div>
-    <script src="./js/main.js"></script>
+    <script>
+        splash = document.getElementById("splash");
+        splash.onload = setTimeout(function redirect() {
+            window.location.href = "se_connecter.html"
+        }, 5000);
+    </script>
 </body>
+
 </html>

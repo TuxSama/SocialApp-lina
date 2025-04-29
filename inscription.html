@@ -63,10 +63,10 @@
     <div class="logo">
       <img src="./assets/img/logo.svg" alt="Lina Logo"> <!-- Replace with actual image -->
       <h1>Lina</h1>
+    <p id="error"></p>
     </div>
-
     <!-- Registration Form -->
-    <form>
+    <form id="login-form">
       <div class="mb-3">
         <label for="username" class="form-label">Nom de l’utilisateur</label>
         <input type="text" class="form-control" id="username" placeholder="nom de l’utilisateur">
@@ -90,5 +90,7 @@
       <p class="bottom-text">vous avez deja un compte <a href="#" class="text-primary">Se connecter</a></p>
     </form>
   </div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.7/dist/umd/supabase.min.js"></script>
+  <script src="./js/auth.js"></script>
 </body>
 </html>

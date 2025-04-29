@@ -63,13 +63,14 @@
     <div class="logo">
       <img src="/assets/img/logo.svg" alt="Lina Logo"> 
       <h1>Lina</h1>
+      <p id="error"></p>
     </div>
 
     <!-- Login Form -->
-    <form>
+    <form id="login-form">
       <div class="mb-3">
-        <label for="username" class="form-label">Nom de l’utilisateur</label>
-        <input type="text" class="form-control" id="username" placeholder="nom de l’utilisateur">
+        <label for="username" class="form-label">E-mail</label>
+        <input type="email" class="form-control" id="email" placeholder="e-mail">
       </div>
       <div class="mb-3">
         <label for="password" class="form-label">Mote de pass</label>
@@ -82,6 +83,7 @@
       <p class="bottom-text">vous n’avez pas d’un compte <a href="#" class="text-primary">S’inscrire</a></p>
     </form>
   </div>
-
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.7/dist/umd/supabase.min.js"></script>
+  <script src="./js/auth.js"></script>
 </body>
 </html>

@@ -53,13 +53,28 @@ if (login_form) {
     if (error) {
       errorBox.classList.add("alert", "alert-danger");
       errorBox.textContent = error.message;
-      console.log(error.message)
+      console.log(error.message);
     } else {
+      const userId = data.user.id;
+      localStorage.setItem('userId', userId);
+
+      // ✅ Fetch and store name and username
+      const { data: userData, error: userError } = await supabase
+        .from('users')
+        .select('name, username')
+        .eq('id', userId)
+        .single();
+
+      if (!userError && userData) {
+        localStorage.setItem('name', userData.name);
+        localStorage.setItem('username', userData.username);
+      }
+
       window.location.href = "accueil.html";
-      console.log(error.message)
     }
   });
 }
+
 else{
 
     async function checkAuth() {

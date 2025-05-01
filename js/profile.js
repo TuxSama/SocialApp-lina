@@ -88,10 +88,9 @@ async function save() {
 
     if (error) throw error;
 
-    console.log("Profile saved successfully!");
+   
     alert("Changes saved!");
 
-    // Re-fetch to ensure UI is up-to-date
     fetchAndAssignProfile();
   } catch (error) {
     console.error("Error saving profile:", error);

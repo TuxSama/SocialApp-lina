@@ -43,6 +43,7 @@
     .field-value {
       font-size: 20px;
       font-weight: bold;
+      border: 0;
     }
   </style>
 </head>
@@ -50,39 +51,35 @@
 
   <div class="gradient-header">
     <i class="bi bi-arrow-left back-btn"></i>
-    <!-- Profile image that will be updated -->
-    <img src="./assets/img/avatar.png" alt="Profile" class="profile-img" id="profile-img" />
+
+    <img  alt="Profile" class="profile-img" id="profile-img" />
     <div class="mt-2">
-      <!-- Pencil icon that triggers the file input -->
       <i class="bi bi-pencil edit-icon" onclick="triggerFileInput()"></i>
     </div>
-    
-    <!-- Hidden file input -->
     <input type="file" id="profile-photo" accept="image/*" class="form-control" style="display:none" onchange="previewAndUploadPhoto(event)" />
   </div>
 
   <div class="container my-4">
-    <div class="d-flex justify-content-between align-items-center mb-3">
+    <div class="d-flex justify-content-around align-items-center mb-3">
       <div>
         <div class="field-label">nom</div>
-        <div class="field-value">oussama baih</div>
+        <input  type="text" class="field-value" id="name" disabled>
       </div>
-      <i class="bi bi-pencil edit-icon"></i>
+      <i class="bi bi-pencil edit-icon" onclick="triggerNameInput()"></i>
     </div>
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="d-flex justify-content-around align-items-center mb-4">
       <div>
         <div class="field-label">nom de l’utilisateur</div>
-        <div class="field-value">usama</div>
+        <input  type="text" class="field-value" id="username" disabled>
       </div>
-      <i class="bi bi-pencil edit-icon"></i>
+      <i class="bi bi-pencil edit-icon" onclick="triggerUsernameInput()"></i>
     </div>
 
     <div class="text-center">
-      <button class="btn save-btn px-4">S'augvarder</button>
+      <button class="btn save-btn px-4" onclick="save()">S'augvarder</button>
     </div>
   </div>
-  <!-- Bootstrap Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.7/dist/umd/supabase.min.js"></script>
   <script src="./js/auth.js"></script>  

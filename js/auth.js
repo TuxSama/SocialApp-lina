@@ -1,89 +1,167 @@
-
 const supabaseUrl = "https://qjbzocrygwczpuslbpbh.supabase.co";
-const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqYnpvY3J5Z3djenB1c2xicGJoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU5MjUyMjksImV4cCI6MjA2MTUwMTIyOX0.b2zV3ZT3SMVs6I_wTn4QKgQzY9y3NgqcliIpLp_Ef9I";
+const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqYnpvY3J5Z3djenB1c2xicGJoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU5MjUyMjksImV4cCI6MjA2MTUwMTIyOX0.b2zV3ZT3SMVs6I_wTn4QKgQzY9y3NgqcliIpLp_Ef9I"; 
 const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
 const signup_form = document.getElementById("signup-form");
 const login_form = document.getElementById("login-form");
 const errorBox = document.getElementById("error");
 
+// === SESSION CHECK FOR PROTECTED PAGES ===
+async function checkAuth() {
+  const { data: { session } } = await supabase.auth.getSession();
+  const currentPage = window.location.pathname.split("/").pop();  // Get the current page's name
+  
+  // If user is not logged in and is not on signup or login page, redirect to login page
+  if (!session && currentPage !== "inscription.html" && currentPage !== "se_connecter.html") {
+    window.location.href = "se_connecter.html";  // Redirect to login page
+  }
+}
+
+// === SIGNUP LOGIC ===
+// === SIGNUP LOGIC ===
 if (signup_form) {
   signup_form.addEventListener("submit", async function (e) {
     e.preventDefault();
+    e.stopPropagation();
+    clearError();
 
-    const username = document.getElementById("username").value;
-    const name = document.getElementById("name").value;
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
+    const email = document.getElementById("signup-email").value.trim();
+    const password = document.getElementById("signup-password").value;
+    const username = document.getElementById("signup-username").value.trim();
+    const name = document.getElementById("signup-name").value.trim();
 
-    const { data, error } = await supabase.auth.signUp({
-      email: email,
-      password: password,
-      options: {
-        data: {
-          username: username,
-          name: name,
-        },
-      },
-    });
+    // Default avatar URL
+    const avatar_url = "assets/img/avatar.png";  // Default avatar path
 
-    if (error) {
-      errorBox.classList.add("alert", "alert-danger");
-      errorBox.textContent = error.message;
-    } else {
-      errorBox.classList.add("alert", "alert-success");
-      errorBox.textContent = "✅ Check your email to confirm registration.";
+    // Basic validation
+    if (!email || !password || !username || !name) {
+      return showError("All fields are required.");
+    }
+
+    try {
+      // Sign up the user
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: { username, name },
+          emailRedirectTo: window.location.origin + "/se_connecter.html"
+        }
+      });
+
+      if (error) throw error;
+
+      if (data.user && data.user.identities.length === 0) {
+        showSuccess("Confirmation email sent. Please check your inbox.");
+        signup_form.reset();
+        return;
+      }
+
+      // Create or update the profile in the 'profiles' table with default avatar URL
+      const { error: profileError } = await supabase
+        .from("profiles")
+        .upsert({
+          id: data.user.id,
+          username,
+          full_name: name,  // Ensure 'full_name' is passed correctly
+          avatar_url: avatar_url,  // Set the default avatar URL
+          updated_at: new Date()
+        });
+
+      if (profileError) {
+        console.warn("Profile creation issue:", profileError.message);
+      }
+
+      showSuccess("Account created successfully!");
       signup_form.reset();
+      console.log("Full name:", name);
+       // Redirect after successful account creation
+
+    } catch (error) {
+      handleAuthError(error);
     }
   });
 }
 
+
+// === LOGIN LOGIC ===
 if (login_form) {
   login_form.addEventListener("submit", async function (e) {
     e.preventDefault();
+    clearError();
 
-    const email = document.getElementById("email").value; 
-    const password = document.getElementById("password").value;
+    const email = document.getElementById("login-email").value.trim();
+    const password = document.getElementById("login-password").value;
 
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email: email,
-      password: password
-    });
+    if (!email || !password) {
+      return showError("Email and password are required.");
+    }
 
-    if (error) {
-      errorBox.classList.add("alert", "alert-danger");
-      errorBox.textContent = error.message;
-      console.log(error.message);
-    } else {
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password
+      });
+
+      if (error) throw error;
+
       const userId = data.user.id;
-      localStorage.setItem('userId', userId);
+      localStorage.setItem("userId", userId);
 
-      // ✅ Fetch and store name and username
-      const { data: userData, error: userError } = await supabase
-        .from('users')
-        .select('name, username')
-        .eq('id', userId)
+      const { data: profileData, error: profileError } = await supabase
+        .from("profiles")
+        .select("username, full_name")
+        .eq("id", userId)
         .single();
 
-      if (!userError && userData) {
-        localStorage.setItem('name', userData.name);
-        localStorage.setItem('username', userData.username);
+      if (profileData) {
+        localStorage.setItem("name", profileData.full_name);
+        localStorage.setItem("username", profileData.username);
       }
 
-      window.location.href = "accueil.html";
+      window.location.href = "accueil.html"; // Redirect after successful login
+
+    } catch (error) {
+      handleAuthError(error);
     }
   });
 }
 
-else{
+// === CHECK AUTH ON OTHER PAGES ===
+else {
+  checkAuth(); // Run session check for pages other than signup and login
+}
 
-    async function checkAuth() {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (!session) {
-          window.location.href = "se_connecter.html";
-        } else {
-          document.body.style.display = "block";
-        }
-      }
-      checkAuth();
+// === HELPER FUNCTIONS ===
+function showError(message) {
+  errorBox.textContent = message;
+  errorBox.className = 'alert alert-danger';
+  errorBox.style.display = 'block';
+}
+
+function showSuccess(message) {
+  errorBox.textContent = message;
+  errorBox.className = 'alert alert-success';
+  errorBox.style.display = 'block';
+}
+
+function clearError() {
+  errorBox.textContent = '';
+  errorBox.className = 'alert';
+  errorBox.style.display = 'none';
+}
+
+function handleAuthError(error) {
+  let message = error.message;
+
+  if (message.includes("User already registered")) {
+    message = "An account with this email already exists.";
+  } else if (message.includes("Password should be at least")) {
+    message = "Password must be at least 6 characters.";
+  } else if (message.includes("Invalid login credentials")) {
+    message = "Incorrect email or password, or email not confirmed.";
+  }
+
+  showError(message);
+  console.error("Auth error:", error);
 }

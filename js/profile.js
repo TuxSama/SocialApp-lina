@@ -7,6 +7,11 @@ const usernamefield = document.getElementById('username');
 const avatar = document.getElementById('profile-img');
 const fileInput = document.getElementById('profile-photo');
 
+
+const profile_name = document.getElementById('name');
+const profile_username = document.getElementById('username');
+
+
 let userId = null;
 let username = null;
 let fullName = null;
@@ -46,12 +51,17 @@ async function fetchAndAssignProfile() {
   fullName = profile.full_name;
   avatarUrl = profile.avatar_url;
 
-  console.log("Profile loaded:", { username, fullName, avatarUrl });
+  
 
  
   if (usernamefield) usernamefield.value = username || '';
   if (nomfield) nomfield.value = fullName || '';
   if (avatar && avatarUrl) avatar.src = avatarUrl;
+
+ 
+  if (profile_username) usernamefield.textContent = '@'+username || '';
+  if (profile_name) nomfield.textContent = fullName || '';
+  
 }
 
 

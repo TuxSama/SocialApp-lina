@@ -33,16 +33,15 @@ if (signup_form) {
     const username = document.getElementById("signup-username").value.trim();
     const name = document.getElementById("signup-name").value.trim();
 
-    // Default avatar URL
-    const avatar_url = "assets/img/avatar.png";  // Default avatar path
+    const avatar_url = "assets/img/avatar.png";  
 
-    // Basic validation
+ 
     if (!email || !password || !username || !name) {
       return showError("All fields are required.");
     }
 
     try {
-      // Sign up the user
+    
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
@@ -60,14 +59,14 @@ if (signup_form) {
         return;
       }
 
-      // Create or update the profile in the 'profiles' table with default avatar URL
+
       const { error: profileError } = await supabase
         .from("profiles")
         .upsert({
           id: data.user.id,
           username,
-          full_name: name,  // Ensure 'full_name' is passed correctly
-          avatar_url: avatar_url,  // Set the default avatar URL
+          full_name: name,
+          avatar_url: avatar_url,
           updated_at: new Date()
         });
 
@@ -78,7 +77,7 @@ if (signup_form) {
       showSuccess("Account created successfully!");
       signup_form.reset();
       console.log("Full name:", name);
-       // Redirect after successful account creation
+    
 
     } catch (error) {
       handleAuthError(error);
@@ -87,7 +86,7 @@ if (signup_form) {
 }
 
 
-// === LOGIN LOGIC ===
+
 if (login_form) {
   login_form.addEventListener("submit", async function (e) {
     e.preventDefault();
@@ -135,7 +134,7 @@ if (login_form) {
   checkAuth(); 
 
 
-// === HELPER FUNCTIONS ===
+
 function showError(message) {
   errorBox.textContent = message;
   errorBox.className = 'alert alert-danger';
@@ -172,5 +171,7 @@ function handleAuthError(error) {
 
 async function logout() {
     await supabase.auth.signOut();
+    localStorage.removeItem("userId");
     window.location.href = "se_connecter.html";
+
   } 

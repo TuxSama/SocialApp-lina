@@ -167,4 +167,9 @@ function handleAuthError(error) {
 
   showError(message);
   console.error("Auth error:", error);
+
 }
+async function logout() {
+    await supabase.auth.signOut();
+    window.location.href = "se_connecter.html";
+  } 

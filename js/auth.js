@@ -6,19 +6,22 @@ const signup_form = document.getElementById("signup-form");
 const login_form = document.getElementById("login-form");
 const errorBox = document.getElementById("error");
 
-// === SESSION CHECK FOR PROTECTED PAGES ===
 async function checkAuth() {
   const { data: { session } } = await supabase.auth.getSession();
-  const currentPage = window.location.pathname.split("/").pop();  // Get the current page's name
-  
-  // If user is not logged in and is not on signup or login page, redirect to login page
+  const currentPage = window.location.pathname.split("/").pop();
+
   if (!session && currentPage !== "inscription.html" && currentPage !== "se_connecter.html") {
-    window.location.href = "se_connecter.html";  // Redirect to login page
+    window.location.href = "se_connecter.html";
   }
+
+  if (session && (currentPage === "se_connecter.html" || currentPage === "inscription.html")) {
+    window.location.href = "accueil.html";
+  }
+  console.log(currentPage)
 }
 
-// === SIGNUP LOGIC ===
-// === SIGNUP LOGIC ===
+
+
 if (signup_form) {
   signup_form.addEventListener("submit", async function (e) {
     e.preventDefault();
@@ -119,7 +122,7 @@ if (login_form) {
         localStorage.setItem("username", profileData.username);
       }
 
-      window.location.href = "accueil.html"; // Redirect after successful login
+      window.location.href = "accueil.html";
 
     } catch (error) {
       handleAuthError(error);
@@ -127,10 +130,10 @@ if (login_form) {
   });
 }
 
-// === CHECK AUTH ON OTHER PAGES ===
-else {
-  checkAuth(); // Run session check for pages other than signup and login
-}
+
+
+  checkAuth(); 
+
 
 // === HELPER FUNCTIONS ===
 function showError(message) {

@@ -1,5 +1,6 @@
 window.addEventListener("DOMContentLoaded", () => {
     fetchAndAssignProfile();
+    loadPostes();
   });
 
 
@@ -19,7 +20,23 @@ window.addEventListener("DOMContentLoaded", () => {
     console.error("Error fetching profile:", error.message);
     return;
   }
+
   avatarUrl = profile.avatar_url;
   if (avatar && avatarUrl) avatar.src = avatarUrl;
   }
   
+
+
+  async function loadPostes(){
+   const { data : postes ,error} = await supabase
+   .from("postes")
+   .select("*, users(id, username, avatar_url)")
+   .order('created_at', { ascending: false });
+
+   if (error) {
+    console.error("Error fetching profile:", error.message);
+    return;
+  }
+
+  
+  };

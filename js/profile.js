@@ -32,6 +32,7 @@ function triggerUsernameInput() {
   usernamefield.focus();
 }
 
+
 async function fetchAndAssignProfile() {
   userId = localStorage.getItem("userId");
 

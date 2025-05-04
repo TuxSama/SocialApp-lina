@@ -69,13 +69,11 @@ async function fetchAndAssignProfile() {
 
 async function save() {
   try {
-    // 1. Upload photo if a new file was selected
     if (selectedFile) {
       await uploadProfilePhoto(selectedFile);
-      selectedFile = null; // Reset after upload
+      selectedFile = null; 
     }
 
-    // 2. Update username and full name (if modified)
     const newUsername = usernamefield.value;
     const newFullName = nomfield.value;
 
@@ -106,9 +104,9 @@ async function save() {
 function previewAndUploadPhoto(event) {
   const file = event.target.files[0];
   if (file) {
-    selectedFile = file; // Store the file for later use in save()
+    selectedFile = file; 
     
-    // Preview the image
+    
     const reader = new FileReader();
     reader.onload = function(e) {
       avatar.src = e.target.result;
@@ -121,7 +119,7 @@ async function uploadProfilePhoto(file) {
     try {
       const { data: { user }, error: authError } = await supabase.auth.getUser();
   
-      // 2. Upload image to storage
+      
       const filePath = `${user.id}/${Date.now()}_${file.name}`;
       const { error: uploadError } = await supabase.storage
         .from('profile-pics')

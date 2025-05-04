@@ -1,3 +1,4 @@
+//post uplaod 
 const fileInput = document.getElementById('file');
 const filereview = document.getElementById('review');
 const postcontent = document.getElementById('post-content');
@@ -37,15 +38,17 @@ function remove(som) {
     }
 
 }
+
 async function annuler() {
   confirm("discard changes");
   window.location.href = "accueil.html"
 }
+
 async function publier() {
+  if(selectedFile && postcontent.value){
   try {
     const { data: { user } } = await supabase.auth.getUser();
-    if (!user) throw new Error("User not authenticated");
-
+  
     let mediaUrl = null;
     const newContent = postcontent.value;
 
@@ -71,6 +74,10 @@ async function publier() {
     alert("Failed to upload: " + error.message);
   }
 }
+  else{
+    alert("fill up all field ")
+  }
+}
 
 
 async function uploadPostMedia(file, userId) {
@@ -93,3 +100,80 @@ async function uploadPostMedia(file, userId) {
     return null;
   }
 }
+
+//short upload
+const shortInput = document.getElementById('shortfile');
+const shortReview = document.getElementById('short-review');
+const shortContent = document.getElementById('short-content');
+
+
+ let selectedShort = null ;
+
+ function triggerShortInput(){
+  shortInput.click()
+ }
+
+ async function previewShort(even){
+  const short = even.target.files[0];
+  if (short){
+    selectedShort = short;
+    shortReview.style.display = "block";
+    shortReview.src = URL.createObjectURL(short);
+  }
+ }
+
+ async function publiershort(){
+  if (shortContent.value && selectedShort ){
+  try {
+     const {data : {user}} = await supabase.auth.getUser();
+
+
+     let short_url = null;
+     const discription = shortContent.value;
+
+     if(selectedShort){
+      short_url = await uploadShort( selectedShort , user.id);
+      selectedShort = null ;
+     }
+
+     const {error} = await supabase
+     .from('shorts')
+     .insert({
+      user_id : user.id,
+      content : discription.Date,
+      media_url : short_url
+     })
+     if (error) throw error;
+     alert("Changes saved!");
+     window.location.reload();
+  }
+  catch (error){
+    console.error("Error uploading post", error);
+    alert("Failed to upload: " + error.message);
+  }
+  }
+  else{
+    alert("fill up all field ")
+  }
+ }
+
+ async function uploadShort(file ,userId){
+      try {
+       const filePath = `${userId}/${Date.now()}_${file.name}`;
+       const {error : uploadError} = await supabase.storage
+       .from('shorts')
+       .upload(filePath , file)
+
+       if (uploadError) throw uploadError;
+
+       const {data : {publicUrl }} = await supabase.storage
+       .from('shorts')
+       .getPublicUrl(filePath)
+       return publicUrl;
+      }
+      catch (error){
+        console.error("Error uploading media:", error);
+        alert(`Failed to upload media: ${error.message}`);
+        return null;
+      }
+ }

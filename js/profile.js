@@ -117,9 +117,8 @@ function previewAndUploadPhoto(event) {
 
 async function uploadProfilePhoto(file) {
     try {
-      const { data: { user }, error: authError } = await supabase.auth.getUser();
-  
-      
+      const { data: { user } } = await supabase.auth.getUser();
+
       const filePath = `${user.id}/${Date.now()}_${file.name}`;
       const { error: uploadError } = await supabase.storage
         .from('profile-pics')
@@ -127,7 +126,7 @@ async function uploadProfilePhoto(file) {
   
       if (uploadError) throw uploadError;
   
-      // 3. Get public URL
+     
       const { data: { publicUrl } } = await supabase.storage
         .from('profile-pics')
         .getPublicUrl(filePath);

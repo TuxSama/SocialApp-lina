@@ -64,7 +64,7 @@
 
 
     <div class="mb-3">
-      <i class="bi bi-paperclip fs-4" onclick="triggerFileInput()"></i>
+      <i class="bi bi-paperclip fs-5 text-secondary" onclick="triggerFileInput()"></i>
       <input type="file" style="display: none;" accept="image/*, video/*" id="file" onchange="previewAndUploadPhoto(event)">
     </div>
 
@@ -75,7 +75,7 @@
     
     <div class="d-grid gap-2">
       <button class="btn text-white" style="background: #b84eff;" onclick="publier()">Publier</button>
-      <button class="btn btn-danger">Cancel</button>
+      <button class="btn btn-danger" onclick="annuler()">Annuler</button>
     </div>
   </div>
 </div>

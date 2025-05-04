@@ -127,7 +127,6 @@ const shortContent = document.getElementById('short-content');
   try {
      const {data : {user}} = await supabase.auth.getUser();
 
-
      let short_url = null;
      const discription = shortContent.value;
 
@@ -140,7 +139,7 @@ const shortContent = document.getElementById('short-content');
      .from('shorts')
      .insert({
       user_id : user.id,
-      content : discription.Date,
+      content : discription,
       media_url : short_url
      })
      if (error) throw error;

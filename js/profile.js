@@ -8,6 +8,10 @@ const usernamefield = document.getElementById('username');
 const avatar = document.getElementById('profile-img');
 const fileInput = document.getElementById('profile-photo');
 const postes_container = document.getElementById('posts');
+const post_number = document.getElementById('post-number');
+const followers = document.getElementById('user-numberA');
+const following = document.getElementById('user-numberB');
+
 
 
 const profile_name = document.getElementById('name');
@@ -37,7 +41,13 @@ function triggerUsernameInput() {
 
 async function fetchAndAssignProfile() {
   userId = localStorage.getItem("userId");
-
+  
+  const { data: users, error1 } = await supabase
+    .from("profiles")
+    .select("*")
+  following.innerText = `${users.length-1}`
+  followers.innerText = `${users.length-1}`
+  
   const { data: profile, error } = await supabase
     .from("profiles")
     .select("*")
@@ -47,8 +57,13 @@ async function fetchAndAssignProfile() {
   if (error) {
     console.error("Error fetching profile:", error.message);
     return;
+  
   }
-
+  if (error1) {
+    console.error("Error fetching profile:", error1.message);
+    return;
+  
+  }
  
   username = profile.username;
   fullName = profile.full_name;
@@ -159,7 +174,7 @@ async function uploadProfilePhoto(file) {
     .order('created_at', { ascending: false })
     .eq('user_id', userId)
  
-   
+    post_number.innerText = `${postes.length}`
      
     if (error) {
      console.error("Error fetching profile:", error.message);

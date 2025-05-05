@@ -1,4 +1,5 @@
 window.addEventListener("DOMContentLoaded", () => {
+    
     fetchAndAssignProfile();
     loadPostes();
   });
@@ -6,6 +7,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
   const avatar = document.getElementById('profile-img');
   const postes_container = document.getElementById('postes');
+ 
   let avatarUrl  = null ;
 
   async function fetchAndAssignProfile(){
@@ -40,7 +42,7 @@ window.addEventListener("DOMContentLoaded", () => {
     console.error("Error fetching profile:", error.message);
     return;
   }
-  for(let post of postes){
+  for(const [index ,post] of postes.entries()){
     postes_container.innerHTML += `<div class="card mb-4">
     <div class="card-body">
       <div class="d-flex align-items-center">
@@ -49,6 +51,7 @@ window.addEventListener("DOMContentLoaded", () => {
           <h5 class="mb-1">${post.profiles.full_name}</h5>
           <p class="mb-0 text-muted">@${post.profiles.username}</p>
         </div>
+        <div style="position:absolute; right:30px;"><i class="bi bi-trash fs-5 text-danger" style="display:none;" id="delete${index}" onclick="deletepost('${post.id}')"></i></div>
       </div>
       <p class="post-content mt-3">
        ${post.content}
@@ -60,11 +63,31 @@ window.addEventListener("DOMContentLoaded", () => {
           <button class="btn btn-primary mx-1"><img src="./assets/img/like.png" alt="" width="24"></button>
           <button class="btn btn-danger mx-1"><img src="./assets/img/dislike.png" alt="" width="24" </button>
         </div>
-        <i class="bi bi-download"></i>
+        <i class="bi bi-download fs-5"></i>
       </div>
     </div>
   </div>
 `;
-}
+if(post.profiles.id === userId){
   
+  document.getElementById(`delete${index}`).style.display="block"
+}
+}
+
   }
+
+ async function deletepost(postId){
+  if(!confirm("are you sure you want to delete this post "))return;
+   const {error} = await supabase
+   .from('posts')
+   .delete()
+   .eq('id' , postId)
+   if (error) {
+    console.error("Error deleting post:", error.message);
+  } else {
+    console.log("Post deleted:", postId);
+    location.reload();
+  }
+ }
+
+

@@ -1,4 +1,4 @@
-//post uplaod 
+
 const fileInput = document.getElementById('file');
 const filereview = document.getElementById('review');
 const postcontent = document.getElementById('post-content');
@@ -176,3 +176,15 @@ const shortContent = document.getElementById('short-content');
         return null;
       }
  }
+
+ document.addEventListener('wheel', function(e) {
+  if (e.ctrlKey) {
+    e.preventDefault();
+  }
+}, { passive: false });
+
+document.addEventListener('keydown', function(e) {
+  if (e.ctrlKey && (e.key === '+' || e.key === '-' || e.key === '=')) {
+    e.preventDefault();
+  }
+});

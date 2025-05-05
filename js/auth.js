@@ -120,7 +120,9 @@ if (login_form) {
         localStorage.setItem("name", profileData.full_name);
         localStorage.setItem("username", profileData.username);
       }
-
+      if (profileError){
+        console.log(profileError.message);
+      }
       window.location.href = "accueil.html";
 
     } catch (error) {
@@ -175,3 +177,16 @@ async function logout() {
     window.location.href = "se_connecter.html";
 
   } 
+
+  document.addEventListener('wheel', function(e) {
+    if (e.ctrlKey) {
+      e.preventDefault();
+    }
+  }, { passive: false });
+  
+  document.addEventListener('keydown', function(e) {
+    if (e.ctrlKey && (e.key === '+' || e.key === '-' || e.key === '=')) {
+      e.preventDefault();
+    }
+  });
+  

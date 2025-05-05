@@ -43,6 +43,7 @@ window.addEventListener("DOMContentLoaded", () => {
     return;
   }
   for(const [index ,post] of postes.entries()){
+    const isOwner = post.profiles.id === userId;
     postes_container.innerHTML += `<div class="card mb-4">
     <div class="card-body">
       <div class="d-flex align-items-center">
@@ -51,8 +52,11 @@ window.addEventListener("DOMContentLoaded", () => {
           <h5 class="mb-1">${post.profiles.full_name}</h5>
           <p class="mb-0 text-muted">@${post.profiles.username}</p>
         </div>
-        <div style="position:absolute; right:30px;"><i class="bi bi-trash fs-5 text-danger" style="display:none;" id="delete${index}" onclick="deletepost('${post.id}')"></i></div>
-      </div>
+        ${isOwner ? 
+        `<div style="position:absolute; right:30px;"><i class="bi bi-trash fs-5 text-danger" style="display:block;" id="delete${index}" onclick="deletepost('${post.id}')"></i></div>
+      </div>` : `<div style="position:absolute; right:30px;"><i class="bi bi-trash fs-5 text-danger" style="display:none;" id="delete${index}" onclick="deletepost('${post.id}')"></i></div>
+      </div>`}
+
       <p class="post-content mt-3">
        ${post.content}
       </p>
@@ -68,10 +72,6 @@ window.addEventListener("DOMContentLoaded", () => {
     </div>
   </div>
 `;
-if(post.profiles.id === userId){
-  
-  document.getElementById(`delete${index}`).style.display="block"
-}
 }
 
   }

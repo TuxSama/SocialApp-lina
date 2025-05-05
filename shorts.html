@@ -32,7 +32,7 @@
       cursor: pointer;
     }
 
-    .play-button {
+    .pause-button {
       background-color: #a000ff;
       width: 60px;
       height: 60px;
@@ -41,18 +41,16 @@
       justify-content: center;
       align-items: center;
       cursor: pointer;
-      position:absolute;
-      z-index: 3;
+      opacity: 0.8;
     }
 
-    .play-button::before {
+    .pause-button::before {
       content: '';
       border-style: solid;
       border-width: 10px 0 10px 20px;
       border-color: transparent transparent transparent white;
       display: inline-block;
       margin-left: 5px;
-      
     }
 
     .reaction-buttons {
@@ -63,7 +61,6 @@
       display: flex;
       flex-direction: column;
       gap: 20px;
-      z-index: 3;
     }
 
     .reaction-buttons .btn {
@@ -107,8 +104,14 @@
       max-width: 360px;
       object-fit: cover;
       border-radius: 10px;
-      position: relative;
       z-index: -1;
+      position: absolute;
+    }
+    .description{
+      font-size:0.6rem ;
+      position: absolute;
+      left: 20px;
+      bottom: 75px;
     }
   </style>
 </head>

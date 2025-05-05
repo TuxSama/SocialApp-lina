@@ -1,11 +1,13 @@
 window.addEventListener("DOMContentLoaded", () => {
   fetchAndAssignProfile();
+  loadPostes();
 });
 
 const nomfield = document.getElementById('name');
 const usernamefield = document.getElementById('username');
 const avatar = document.getElementById('profile-img');
 const fileInput = document.getElementById('profile-photo');
+const postes_container = document.getElementById('posts');
 
 
 const profile_name = document.getElementById('name');
@@ -131,11 +133,11 @@ async function uploadProfilePhoto(file) {
         .from('profile-pics')
         .getPublicUrl(filePath);
   
-      // 4. Upsert profile (secure, thanks to RLS!)
+    
       const { error: upsertError } = await supabase
         .from('profiles')
         .upsert({
-          id: user.id,          // Critical: Matches auth.uid()
+          id: user.id,          
           avatar_url: publicUrl
         });
   
@@ -147,6 +149,56 @@ async function uploadProfilePhoto(file) {
       console.error("Error:", error);
       alert(`Failed: ${error.message}`);
     }
+  }
+
+
+  async function loadPostes(){
+    const { data : postes ,error} = await supabase
+    .from("posts")
+    .select("*, profiles(id, username, avatar_url,full_name)")
+    .order('created_at', { ascending: false })
+    .eq('user_id', userId)
+ 
+   
+     
+    if (error) {
+     console.error("Error fetching profile:", error.message);
+     return;
+   }
+   for(const [index ,post] of postes.entries()){
+     postes_container.innerHTML += `
+      <div class="post-card">
+      
+        <div class="d-flex align-items-center mb-2">
+          <img src="${post.profiles.avatar_url}" class="rounded-circle me-2" alt="user" height="50" width="50">
+          <div>
+          
+            <div class="fw-bold">${post.profiles.full_name}</div>
+            <small class="text-muted">@${post.profiles.username}</small>
+          </div>
+            <div style="" class="ms-auto"><i class="bi bi-trash fs-5 text-danger" style="display:block;" id="delete${index}" onclick="deletepost('${post.id}')"></i></div>
+        </div>
+        <div>
+        ${post.content}
+        </div>
+        <img src="${post.media_url}" alt="Post Image">
+      </div>`;
+ }
+ 
+   }
+ 
+  async function deletepost(postId){
+   if(!confirm("are you sure you want to delete this post "))return;
+    const {error} = await supabase
+    .from('posts')
+    .delete()
+    .eq('id' , postId)
+    if (error) {
+     console.error("Error deleting post:", error.message);
+   } else {
+     console.log("Post deleted:", postId);
+     location.reload();
+   }
   }
 
 

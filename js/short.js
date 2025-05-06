@@ -53,8 +53,11 @@ async function loadShorts() {
           class="video" loop></video>
   
         <div class="reaction-buttons">
-          <button class="btn btn-primary"><img src="./assets/img/like.png" alt="" width="24"></button>
-          <button class="btn btn-danger"><img src="./assets/img/dislike.png" alt="" width="24"></button>
+         
+          <button class="btn btn-primary"><img src="./assets/img/like.png" alt="" width="24" onclick="like('${short.id}')"></button>
+          <span id="like-${short.id}" class="reacts  text-primary"></span>
+          <button class="btn btn-danger"><img src="./assets/img/dislike.png" alt="" width="24" onclick="dislike('${short.id}')" ></button>
+          <span id="dislike-${short.id}" class="reacts text-danger"></span>
         </div>
         <p class="text-light description">${short.content}</p>
         <div class="user-info">
@@ -66,9 +69,9 @@ async function loadShorts() {
           </div>
         </div>
       </div>`;
+     await loadReactions(short.id);
   }
 
-  // Add event listeners after elements exist
   document.querySelectorAll(".short-container").forEach((container) => {
     container.addEventListener("click", function (e) {
       if (e.target.closest(".back-arrow")) return;
@@ -134,6 +137,66 @@ function togglePlayPause(video, pauseBtn) {
 function historyBack(event) {
   event.stopPropagation();
   window.history.back();
+}
+
+async function loadReactions(shortId){
+  const {data : reactions} = await supabase
+  .from('reactions')
+  .select('user_id , is_like')
+  .eq('short_id',shortId)
+   let likes = 0;
+   let dislikes = 0;
+   const likes_react = document.getElementById(`like-${shortId}`);
+   const dislikes_react = document.getElementById(`dislike-${shortId}`);
+
+  for (const react of reactions){
+    if(react.is_like){
+     likes+=1
+    }
+    else if(!react.is_like){
+     dislikes+=1
+    }
+  }
+  likes_react.innerText = `${likes}`;
+  dislikes_react.innerText = `${dislikes}`
+ }
+
+async function like(shortId) {
+ userId = localStorage.getItem("userId");
+ const {error} = await supabase
+ .from('reactions')
+ .upsert([
+   {
+     user_id: userId,       
+     post_id: null,  
+     short_id: shortId,           
+     is_like: true               
+   }
+ ],
+ {
+   onConflict: ['user_id', 'short_id'] 
+ });
+ if(error){console.log(error.message)}
+ await loadReactions(shortId)
+}
+
+async function dislike(shortId) {
+ userId = localStorage.getItem("userId");
+ const {error} = await supabase
+ .from('reactions')
+ .upsert([
+  {
+    user_id: userId,       
+    post_id: null,  
+    short_id: shortId,           
+    is_like: false              
+  }
+],
+{
+  onConflict: ['user_id', 'short_id'] 
+});
+if(error){console.log(error.message)}
+await loadReactions(shortId)
 }
 
 async function deleteshort(shortId) {

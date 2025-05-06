@@ -1,4 +1,4 @@
-// window.a
+
 document.addEventListener('wheel', function(e) {
     if (e.ctrlKey) {
       e.preventDefault();

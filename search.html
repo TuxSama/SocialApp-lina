@@ -56,33 +56,17 @@
       </div>
     <!-- Search Bar -->
     <div class="search-bar d-flex">
-        <input type="text" class="form-control" placeholder="Rechercher" aria-label="Search">
-        <button class="btn btn-light ml-2"><i class="bi bi-search"></i></button>
+        <input type="text" class="form-control" placeholder="Rechercher" aria-label="Search" id="search-input">
+        <button class="btn btn-light ml-2" onclick="searchUser()"><i class="bi bi-search"></i></button>
     </div>
 
-    <!-- User Card -->
-    <div class="user-card">
-        <img src="./assets/img/avatar.png" alt="User Avatar">
-        <div class="user-info">
-            <h5>shaun</h5>
-            <p>@shaun</p>
-        </div>
-        <button class="btn btn-sm btn-light">
-            <i class="bi bi-x"></i>
-        </button>
-    </div>
-    <div class="user-card">
-        <img src="./assets/img/avatar.png" alt="User Avatar">
-        <div class="user-info">
-            <h5>oussama baih</h5>
-            <p>@usama</p>
-        </div>
-        <button class="btn btn-sm btn-light">
-            <i class="bi bi-x"></i>
-        </button>
+    
+       <div id="user-container">
+      
     </div>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.7/dist/umd/supabase.min.js"></script>
     <script src="./js/auth.js"></script>
+    <script src="./js/users.js"></script>
 </body>
 </html>

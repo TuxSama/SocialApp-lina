@@ -43,5 +43,5 @@ async function searchUser() {
 
 async function chat(userId) {
     console.log(userId)
-    window.location.href = `chat.html?${userId}`;
+    window.location.href = `chat.html?userId=${userId}`;
 }

@@ -38,7 +38,8 @@ async function loadShorts() {
           &#8592;
         </div>
        
-        <div class="pause-button" id="pause-btn-${index}" style="display:none;"></div>
+        <div class="pause-button" id="pause-btn-${index}" style="display:none;"><img src="./assets/img/playshort.png"></div>
+
        <a href="poster.html"><i class="bi bi-file-plus text-light fs-4" style="display:block; position:absolute; right:70px; top:23px"></i></a>
        ${
          isOwner

@@ -1,4 +1,5 @@
 window.addEventListener('DOMContentLoaded',()=>{
+  
   loadUsers()
 })
 
@@ -11,7 +12,9 @@ const chat_Box = document.getElementById('chat-body');
 const msgInput = document.getElementById('msgInput')
 console.log(receiverId);
 
-
+if(!receiverId){
+  window.location.href= "message.html"
+}
 async function loadUsers() {
 
   const {data : user, error} = await supabase
@@ -28,6 +31,7 @@ async function loadUsers() {
 
 async function sendMessage() {
   const content = msgInput.value;
+  if(!content)return;
   const { error } = await supabase
     .from("messages")
     .insert([{ sender_id: senderId, receiver_id: receiverId, content }]);

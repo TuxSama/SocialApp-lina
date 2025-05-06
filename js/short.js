@@ -37,7 +37,7 @@ async function loadShorts() {
         <div class="back-arrow" onclick="history.back(event)">
           &#8592;
         </div>
-        
+       
         <div class="pause-button" id="pause-btn-${index}" style="display:none;"></div>
        <a href="poster.html"><i class="bi bi-file-plus text-light fs-4" style="display:block; position:absolute; right:70px; top:23px"></i></a>
        ${
@@ -66,6 +66,9 @@ async function loadShorts() {
             <div>${short.profiles.full_name}</div>
             <div class="text-secondary">@${short.profiles.username}</div>
           </div>
+           <a href="#" onclick="downloadFile('${short.media_url}', '${short.content.trim().replace(/[^\w\s]/gi, '')}.mp4')" class="ms-5" style="position:absolute; left:170%;">
+        <i class="bi bi-download fs-5 text-light"></i>
+        </a>
         </div>
       </div>`;
      await loadReactions(short.id);
@@ -78,7 +81,7 @@ async function loadShorts() {
         e.target.closest(".reaction-buttons") ||
         e.target.closest(".bi-trash") ||
         e.target.closest(".bi-file-plus") ||
-        e.target.closest(".pause-button")
+        e.target.closest(".bi-download")
       )
         return;
       const video = this.querySelector("video");
@@ -88,6 +91,28 @@ async function loadShorts() {
   });
 
   setupIntersectionObserver();
+}
+
+async function downloadFile(videoUrl, fileName) {
+  try {
+    const response = await fetch(videoUrl);
+    const blob = await response.blob();
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = fileName;
+    document.body.appendChild(a);
+    a.click();
+
+    // Cleanup
+    setTimeout(() => {
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }, 100);
+  } catch (error) {
+    console.error("Download failed:", error);
+  }
 }
 
 function setupIntersectionObserver() {

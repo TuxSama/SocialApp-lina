@@ -94,15 +94,41 @@ window.addEventListener("DOMContentLoaded", () => {
           <button class="btn btn-outline-danger mx-1"><img src="./assets/img/dislike.png" alt="dislike" width="24" onclick="dislike('${post.id}')"></button>
           <span id="react-${post.id}"></span>
         </div>
-        <i class="bi bi-download fs-5"></i>
+        
+       <a href="#" onclick="downloadFile('${post.media_url}', '${post.content.trim().replace(/[^\w\s]/gi, '')}.jpeg')">
+  <i class="bi bi-download fs-5"></i>
+</a>
       </div>
     </div>
+
   </div>
 `;
 await loadReactions(post.id)
+  }
 }
 
+async function downloadFile(imageUrl, fileName) {
+  try {
+    const response = await fetch(imageUrl);
+    const blob = await response.blob();
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = fileName;
+    document.body.appendChild(a);
+    a.click();
+
+    setTimeout(() => {
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }, 100);
+  } catch (error) {
+    console.error("Download failed:", error);
+  }
 }
+
+
 
   async function loadReactions(postId){
    const {data : reactions} = await supabase

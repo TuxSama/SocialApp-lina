@@ -7,15 +7,11 @@ const users_container = document.getElementById('user-container');
 let usersList = null;
 
 async function loadUsers() {
-
     const {data : users, error} = await supabase
     .from('profiles')
     .select('*')
 
     usersList = users;
-
-
-    
 } 
 async function searchUser() {
     const val = search.value.trim();
@@ -42,6 +38,32 @@ async function searchUser() {
 }
 
 async function chat(userId) {
-    console.log(userId)
     window.location.href = `chat.html?userId=${userId}`;
 }
+
+async function recivers(){
+//     usersList
+//     const { data, error } = await supabase
+//     .from("messages")
+//     .select("*")
+//     .order("created_at", { ascending: true });
+//     console.log(data)
+//   if (error) return console.error("Load error:", error);
+
+  const { data: messages, error } = await supabase
+  .from('messages')
+  .select('*');
+
+const lastMessages = {};
+messages.forEach(msg => {
+  const r = msg.receiver_id;
+  if (!lastMessages[r] || new Date(msg.timestamp) > new Date(lastMessages[r].timestamp)) {
+    lastMessages[r] = msg;
+  }
+});
+
+const result = Object.values(lastMessages);
+console.log(result);
+
+}
+recivers();

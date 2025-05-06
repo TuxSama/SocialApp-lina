@@ -9,12 +9,12 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
   <style>
-    html{
-  overflow-x: auto;
-  scroll-behavior: smooth;
-  scrollbar-width: none;
-}
-    
+    html {
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      scrollbar-width: none;
+    }
+
     body {
       background: linear-gradient(to bottom, #6a4fff, #ffffff);
       min-height: 100vh;
@@ -38,7 +38,7 @@
       margin-top: 10px;
       overflow-x: scroll;
       scrollbar-width: none;
-      
+
     }
 
     .post-img {
@@ -50,7 +50,7 @@
       margin-top: 10px;
     }
 
-    #postes{
+    #postes {
       max-width: 850px;
       justify-self: center;
     }
@@ -59,12 +59,12 @@
       display: flex;
       gap: 10px;
     }
-    
+
     .social-icons .btn {
       padding: 8px;
       border-radius: 50%;
     }
-   
+
     .card {
       background-color: #ffffff;
       border-radius: 10px;
@@ -94,6 +94,45 @@
 
     .nav-bar img[src$=".svg"] {
       filter: invert(1);
+    }
+
+    #react {
+      color: red;
+      position: absolute;
+      bottom: calc(50% - 64px);
+      left: calc(50% - 64px);
+      z-index: 99;
+    }
+
+    @keyframes shake {
+      0% {
+        transform: translateX(0);
+        transform: rotate(0);
+      }
+
+      25% {
+        transform: translateX(-5px);
+        transform: rotate(-10deg);
+      }
+
+      50% {
+        transform: translateX(5px);
+        transform: rotate(10deg);
+      }
+
+      75% {
+        transform: translateX(-5px);
+        transform: rotate(-10deg);
+      }
+
+      100% {
+        transform: translateX(0);
+        transform: rotate(0);
+      }
+    }
+
+    .shake {
+      animation: shake 0.5s;
     }
   </style>
 </head>
@@ -143,7 +182,7 @@
   </div>
 
   <div id="postes">
-    
+
   </div>
 
   </div>

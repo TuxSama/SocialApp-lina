@@ -51,18 +51,17 @@ async function loadShorts() {
         <video src="${short.media_url}"
           id="short-${index}" 
           class="video" loop></video>
-  
+         <div id="react"><img src="" width="128" alt="react" id="react-sticker-${short.id}" style="display:none;"></div>
         <div class="reaction-buttons">
-         
           <button class="btn btn-primary"><img src="./assets/img/like.png" alt="" width="24" onclick="like('${short.id}')"></button>
           <span id="like-${short.id}" class="reacts  text-primary"></span>
           <button class="btn btn-danger"><img src="./assets/img/dislike.png" alt="" width="24" onclick="dislike('${short.id}')" ></button>
           <span id="dislike-${short.id}" class="reacts text-danger"></span>
         </div>
-        <p class="text-light description">${short.content}</p>
+        <p class="text-light description ms-3">${short.content}</p>
         <div class="user-info">
         
-          <img src="${short.profiles.avatar_url}" alt="User avatar" />
+          <img src="${short.profiles.avatar_url}" alt="User avatar" class="ms-2" />
           <div>
             <div>${short.profiles.full_name}</div>
             <div class="text-secondary">@${short.profiles.username}</div>
@@ -74,7 +73,14 @@ async function loadShorts() {
 
   document.querySelectorAll(".short-container").forEach((container) => {
     container.addEventListener("click", function (e) {
-      if (e.target.closest(".back-arrow")) return;
+      if (
+        e.target.closest(".back-arrow") ||
+        e.target.closest(".reaction-buttons") ||
+        e.target.closest(".bi-trash") ||
+        e.target.closest(".bi-file-plus") ||
+        e.target.closest(".pause-button")
+      )
+        return;
       const video = this.querySelector("video");
       const pauseBtn = this.querySelector(".pause-button");
       togglePlayPause(video, pauseBtn);
@@ -177,6 +183,13 @@ async function like(shortId) {
    onConflict: ['user_id', 'short_id'] 
  });
  if(error){console.log(error.message)}
+
+ const react_sticker = document.getElementById(`react-sticker-${shortId}`);
+ react_sticker.src = './assets/img/like.png';
+ react_sticker.style.display= "block";
+ react_sticker.classList.add("shake")
+ setTimeout(() => {react_sticker.style.display= "none"},1000)
+
  await loadReactions(shortId)
 }
 
@@ -196,6 +209,13 @@ async function dislike(shortId) {
   onConflict: ['user_id', 'short_id'] 
 });
 if(error){console.log(error.message)}
+
+const react_sticker = document.getElementById(`react-sticker-${shortId}`);
+react_sticker.src = './assets/img/dislike.png';
+react_sticker.style.display= "block";
+react_sticker.classList.add("shake")
+setTimeout(() => {react_sticker.style.display= "none"},1000)
+
 await loadReactions(shortId)
 }
 

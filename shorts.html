@@ -63,6 +63,7 @@
       display: flex;
       flex-direction: column;
       gap: 10px;
+      
     }
 
     .reaction-buttons .btn {
@@ -72,7 +73,7 @@
       font-size: 1.2rem;
       display: flex;
       justify-content: center;
-      align-items: center
+      align-items: center;
     }
 
     .user-info {
@@ -124,6 +125,45 @@
      margin: auto;
      font-weight: bold;
     } 
+
+    #react {
+      color: red;
+      position: absolute;
+      bottom: calc(50% - 64px);
+      left: calc(50% - 64px);
+      z-index: 99;
+    }
+
+    @keyframes shake {
+      0% {
+        transform: translateX(0);
+        transform: rotate(0);
+      }
+
+      25% {
+        transform: translateX(-5px);
+        transform: rotate(-10deg);
+      }
+
+      50% {
+        transform: translateX(5px);
+        transform: rotate(10deg);
+      }
+
+      75% {
+        transform: translateX(-5px);
+        transform: rotate(-10deg);
+      }
+
+      100% {
+        transform: translateX(0);
+        transform: rotate(0);
+      }
+    }
+
+    .shake {
+      animation: shake 0.5s;
+    }
      </style>
 </head>
 

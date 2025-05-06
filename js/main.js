@@ -83,12 +83,15 @@ window.addEventListener("DOMContentLoaded", () => {
       <p class="post-content mt-3">
        ${post.content}
       </p>
+      
       <img src="${post.media_url}" alt="Post Image" class="post-img mt-3">
 
+      <div id="react"><img src="" width="128" alt="react" id="react-sticker-${post.id}" style="display:none;"></div>
+      
       <div class="social-icons mt-3 d-flex justify-content-between w-100">
         <div>
-          <button class="btn btn-primary mx-1"><img src="./assets/img/like.png" alt="" width="24" onclick="like('${post.id}')"></button>
-          <button class="btn btn-danger mx-1"><img src="./assets/img/dislike.png" alt="" width="24" onclick="dislike('${post.id}')"></button>
+          <button class="btn btn-outline-primary mx-1"><img src="./assets/img/like.png" alt="like" width="24" onclick="like('${post.id}')"></button>
+          <button class="btn btn-outline-danger mx-1"><img src="./assets/img/dislike.png" alt="dislike" width="24" onclick="dislike('${post.id}')"></button>
           <span id="react-${post.id}"></span>
         </div>
         <i class="bi bi-download fs-5"></i>
@@ -136,9 +139,17 @@ await loadReactions(post.id)
     onConflict: ['user_id', 'post_id'] 
   });
   if(error){console.log(error.message)}
-  await loadReactions(postId)
- }
 
+  const react_sticker = document.getElementById(`react-sticker-${postId}`);
+  react_sticker.src = './assets/img/like.png';
+  react_sticker.style.display= "block";
+  react_sticker.classList.add("shake")
+  setTimeout(() => {react_sticker.style.display= "none"},1000)
+
+  await loadReactions(postId)
+  
+ }
+ 
  async function dislike(postId) {
   userId = localStorage.getItem("userId");
   const {error} = await supabase
@@ -155,6 +166,13 @@ await loadReactions(post.id)
     onConflict: ['user_id', 'post_id']
   });
   if(error){console.log(error.message)};
+
+  const react_sticker = document.getElementById(`react-sticker-${postId}`);
+  react_sticker.src = './assets/img/dislike.png';
+  react_sticker.style.display= "block";
+  react_sticker.classList.add("shake")
+  setTimeout(() => {react_sticker.style.display= "none"},1000);
+
   await loadReactions(postId)
  }
 

@@ -62,7 +62,7 @@ async function loadConversations(){
   `)
 
 const lastMessages = {};
-conversations_container.innerHTML ="";
+
 messages.forEach(msg => {
   
   const conversationKey = [msg.sender_id, msg.receiver_id].sort().join('-');

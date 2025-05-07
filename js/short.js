@@ -34,9 +34,11 @@ async function loadShorts() {
     const isOwner = short.profiles.id === userId;
     shortes_container.innerHTML += `
       <div class="short-container short" id="short-container-${index}">
-        <div class="back-arrow" onclick="history.back(event)">
-          &#8592;
+        <div class="back-arrow">
+        <a href="./accueil.html">
+         <i class="bi bi-arrow-left text-light"></i>
         </div>
+        </a>
        
         <div class="pause-button" id="pause-btn-${index}" style="display:none;"><img src="./assets/img/playshort.png"></div>
 

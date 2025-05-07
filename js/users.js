@@ -4,7 +4,7 @@ window.addEventListener('DOMContentLoaded' ,function(){
 
 const search = document.getElementById('search-input');
 const users_container = document.getElementById('user-container');
-const receiver_container = document.getElementById('receiver-container');
+const conversations_container = document.getElementById('conversations-container');
 const userId = localStorage.getItem('userId')
 let usersList = null;
 
@@ -15,7 +15,7 @@ async function loadUsers() {
     .select('*')
 
     usersList = users;
-    loadRecivers();
+    if(conversations_container){loadConversations();}
 } 
 async function searchUser() {
     const val = search.value.trim();
@@ -43,7 +43,7 @@ async function searchUser() {
 
 
 
-async function loadRecivers(){
+async function loadConversations(){
 
     const { data: messages, error } = await supabase
   .from('messages')
@@ -60,8 +60,9 @@ async function loadRecivers(){
       avatar_url
     )
   `)
+
 const lastMessages = {};
-receiver_container.innerHTML ="";
+conversations_container.innerHTML ="";
 messages.forEach(msg => {
   
   const conversationKey = [msg.sender_id, msg.receiver_id].sort().join('-');
@@ -102,7 +103,7 @@ result.forEach(entry => {
       <div>@${entry.user.username}</div>
       <div>${entry.message}</div></div>
     </div>`;
-    receiver_container.appendChild(newDiv)
+    conversations_container.appendChild(newDiv)
   });
   
 }

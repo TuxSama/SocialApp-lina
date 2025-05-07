@@ -108,6 +108,7 @@ async function fetchAndAssignProfile() {
 
 
 async function save() {
+  showLoader()
   try {
     if (selectedFile) {
       await uploadProfilePhoto(selectedFile);
@@ -127,7 +128,7 @@ async function save() {
 
     if (error) throw error;
 
-   
+    hideLoader()
     alert("Changes saved!");
 
     fetchAndAssignProfile();
@@ -269,5 +270,9 @@ if(postes_container)
   }
 
 
-
-
+function showLoader() {
+  document.getElementById('loader').classList.remove('hidden');
+}
+function hideLoader() {
+  document.getElementById('loader').classList.add('hidden');
+}

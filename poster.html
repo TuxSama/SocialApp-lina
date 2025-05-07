@@ -46,7 +46,45 @@
       padding: 2px 5px;
       cursor: pointer;
     }
-    
+
+    .loader {
+      box-sizing: border-box;
+      position: relative;
+      width: 48px;
+      height: 48px;
+      position: fixed;
+      top: calc(50% - 24px);
+      left: calc(50% - 24px);
+      z-index: 4;
+      animation: spin 1s linear infinite;
+    }
+
+    .loader:after,
+    .loader:before {
+      content: "";
+      width: 24px;
+      height: 24px;
+      position: absolute;
+      border-radius: 50%;
+      background: #6f59fc;
+      animation: spin 1s linear infinite;
+      transform-origin: 0px 100%;
+    }
+
+    .loader:before {
+      transform-origin: 0 50%;
+      background: #aa43ee;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .hidden {
+      display: none;
+    }
   </style>
 </head>
 
@@ -60,7 +98,7 @@
       </a>
     </div>
 
-    
+    <div id="loader" class="loader hidden"></div>
     <ul class="nav nav-tabs justify-content-around mt-4 mb-4" id="profileTabs" role="tablist">
       <li class="nav-item" role="presentation">
         <button class="nav-link active text-dark" id="posts-tab" data-bs-toggle="tab" data-bs-target="#post"
@@ -76,9 +114,9 @@
       </li>
     </ul>
 
-   
+
     <div class="tab-content container" id="profileTabsContent">
-  
+
       <div class="tab-pane fade show active" id="post" role="tabpanel">
         <div class="card shadow p-4">
           <h4 class="text-center mb-3">Cree un post</h4>
@@ -99,17 +137,17 @@
         </div>
       </div>
 
-  
+
       <div class="tab-pane fade" id="short" role="tabpanel">
         <div class="card shadow p-4">
           <h4 class="text-center mb-3">Cree un Short</h4>
 
           <div class="mb-3 d-flex flex-column align-items-center ">
-            <video src="" id="short-review" controls style="width: 100%; max-width: 360px; min-height: 500px; border-radius: 10px; display: none; background-color: black;">
+            <video src="" id="short-review" controls
+              style="width: 100%; max-width: 360px; min-height: 500px; border-radius: 10px; display: none; background-color: black;">
             </video>
 
-            <input type="file" style="display: none;" accept="video/*" id="shortfile"
-              onchange="previewShort(event)">
+            <input type="file" style="display: none;" accept="video/*" id="shortfile" onchange="previewShort(event)">
           </div>
           <div class="mb-3">
             <input type="text" class="form-control mb-3" rows="5" placeholder="Ecrire ici ..." id="short-content">
@@ -132,7 +170,3 @@
 </body>
 
 </html>
-
-
-
-

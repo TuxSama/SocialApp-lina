@@ -45,7 +45,9 @@ async function annuler() {
 }
 
 async function publier() {
+  
   if(selectedFile && postcontent.value){
+    showLoader();
   try {
     const { data: { user } } = await supabase.auth.getUser();
   
@@ -66,13 +68,14 @@ async function publier() {
       });
 
     if (error) throw error;
-
+    hideLoader();
     alert("Changes saved!");
      window.location.reload();
   } catch (error) {
     console.error("Error uploading post", error);
     alert("Failed to upload: " + error.message);
   }
+  
 }
   else{
     alert("fill up all field ")
@@ -101,7 +104,7 @@ async function uploadPostMedia(file, userId) {
   }
 }
 
-//short upload
+
 const shortInput = document.getElementById('shortfile');
 const shortReview = document.getElementById('short-review');
 const shortContent = document.getElementById('short-content');
@@ -124,6 +127,7 @@ const shortContent = document.getElementById('short-content');
 
  async function publiershort(){
   if (shortContent.value && selectedShort ){
+    showLoader();
   try {
      const {data : {user}} = await supabase.auth.getUser();
 
@@ -143,6 +147,7 @@ const shortContent = document.getElementById('short-content');
       media_url : short_url
      })
      if (error) throw error;
+     hideLoader();
      alert("Changes saved!");
      window.location.reload();
   }
@@ -188,3 +193,10 @@ document.addEventListener('keydown', function(e) {
     e.preventDefault();
   }
 });
+
+function showLoader() {
+  document.getElementById('loader').classList.remove('hidden');
+}
+function hideLoader() {
+  document.getElementById('loader').classList.add('hidden');
+}

@@ -6,13 +6,15 @@ window.addEventListener('DOMContentLoaded',()=>{
 const params = new URLSearchParams(window.location.search);
 const receiverId = params.get('userId');
 const senderId = localStorage.getItem("userId");
+const receiver_container = document.getElementById('receiver-container');
 const username = document.getElementById('username');
 const avatar = document.getElementById('avatar');
 const chat_Box = document.getElementById('chat-body');
 const msgInput = document.getElementById('msgInput')
+
 console.log(receiverId);
 
-if(!receiverId){
+if(!receiverId || receiverId == "undefined" ){
   window.location.href= "message.html"
 }
 async function loadUsers() {
@@ -74,7 +76,65 @@ function displayMessage(msg) {
   chat_Box.appendChild(msgDiv);
  
 }
+async function loadRecivers(){
 
+  const { data: messages, error } = await supabase
+.from('messages')
+.select(`
+  *,
+  receiver:profiles!receiver_id (
+    username,
+    avatar_url
+  ),
+  sender:profiles!sender_id (
+    username,
+    avatar_url
+  )
+`)
+const lastMessages = {};
+receiver_container.innerHTML ="";
+messages.forEach(msg => {
+
+const conversationKey = [msg.sender_id, msg.receiver_id].sort().join('-');
+
+
+if (
+  !lastMessages[conversationKey] ||
+  new Date(msg.created_at) > new Date(lastMessages[conversationKey].created_at)
+) {
+  lastMessages[conversationKey] = msg;
+}
+});
+
+console.log(messages);
+
+const currentUserId = senderId;
+
+const result = Object.values(lastMessages).map(msg => {
+const isSender = msg.sender_id === currentUserId;
+const otherUser = isSender ? msg.receiver : msg.sender;
+
+return {
+  message: msg.content,
+  time: msg.created_at,
+  user: {
+    username: otherUser?.username,
+    avatar_url: otherUser?.avatar_url
+  }
+};
+});
+result.forEach(entry => {
+  const newDiv = document.createElement('div');
+  newDiv.innerHTML =`<div class="d-flex align-items-center mb-3">
+    <img src="${entry.user.avatar_url}" alt="avatar" class="profile-img">
+    <div>
+    <div>@${entry.user.username}</div>
+    <div>${entry.message}</div></div>
+  </div>`;
+  receiver_container.appendChild(newDiv)
+});
+
+}
 function time(dateStr) {
   const date = new Date(dateStr);
   return `${date.toLocaleString("fr-FR", { weekday: "short" })} ${date.getHours()}:${date.getMinutes()}`

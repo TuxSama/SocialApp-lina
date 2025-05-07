@@ -4,7 +4,10 @@ window.addEventListener('DOMContentLoaded' ,function(){
 
 const search = document.getElementById('search-input');
 const users_container = document.getElementById('user-container');
+const receiver_container = document.getElementById('receiver-container');
+const userId = localStorage.getItem('userId')
 let usersList = null;
+
 
 async function loadUsers() {
     const {data : users, error} = await supabase
@@ -12,6 +15,7 @@ async function loadUsers() {
     .select('*')
 
     usersList = users;
+    loadRecivers();
 } 
 async function searchUser() {
     const val = search.value.trim();
@@ -37,33 +41,71 @@ async function searchUser() {
     }
 }
 
-async function chat(userId) {
-    window.location.href = `chat.html?userId=${userId}`;
-}
 
-async function recivers(){
-//     usersList
-//     const { data, error } = await supabase
-//     .from("messages")
-//     .select("*")
-//     .order("created_at", { ascending: true });
-//     console.log(data)
-//   if (error) return console.error("Load error:", error);
 
-  const { data: messages, error } = await supabase
+async function loadRecivers(){
+
+    const { data: messages, error } = await supabase
   .from('messages')
-  .select('*');
-
+  .select(`
+    *,
+    receiver:profiles!receiver_id (
+      id,
+      username,
+      avatar_url
+    ),
+    sender:profiles!sender_id (
+      id,
+      username,
+      avatar_url
+    )
+  `)
 const lastMessages = {};
+receiver_container.innerHTML ="";
 messages.forEach(msg => {
-  const r = msg.receiver_id;
-  if (!lastMessages[r] || new Date(msg.timestamp) > new Date(lastMessages[r].timestamp)) {
-    lastMessages[r] = msg;
+  
+  const conversationKey = [msg.sender_id, msg.receiver_id].sort().join('-');
+
+ 
+  if (
+    !lastMessages[conversationKey] ||
+    new Date(msg.created_at) > new Date(lastMessages[conversationKey].created_at)
+  ) {
+    lastMessages[conversationKey] = msg;
   }
 });
 
-const result = Object.values(lastMessages);
-console.log(result);
 
+
+const currentUserId = userId;
+
+const result = Object.values(lastMessages).map(msg => {
+  const isSender = msg.sender_id === currentUserId;
+  const otherUser = isSender ? msg.receiver : msg.sender;
+
+  return {
+    message: msg.content,
+    time: msg.created_at,
+    
+    user: {
+      id : otherUser?.id,
+      username: otherUser?.username,
+      avatar_url: otherUser?.avatar_url
+    }
+  };
+});
+result.forEach(entry => {
+    const newDiv = document.createElement('div');
+    newDiv.innerHTML =`<div class="d-flex align-items-center mb-3" onclick="chat('${entry.user.id}')">
+      <img src="${entry.user.avatar_url}" alt="avatar" class="profile-img">
+      <div>
+      <div>@${entry.user.username}</div>
+      <div>${entry.message}</div></div>
+    </div>`;
+    receiver_container.appendChild(newDiv)
+  });
+  
 }
-recivers();
+async function chat(userId) {
+    window.location.href = `chat.html?userId=${userId}`;
+}

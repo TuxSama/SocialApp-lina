@@ -200,6 +200,10 @@ if (window.location.hash === '#short') {
   shortsTab.show();
 }
 
+function goBack() {
+  window.history.back(); 
+}
+
 function showLoader() {
   document.getElementById('loader').classList.remove('hidden');
 }

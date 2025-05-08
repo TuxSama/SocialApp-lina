@@ -35,14 +35,14 @@ async function loadShorts() {
     shortes_container.innerHTML += `
       <div class="short-container short" id="short-container-${index}">
         <div class="back-arrow">
-        <a href="./accueil.html">
+        <a href="/accueil.html">
          <i class="bi bi-arrow-left text-light"></i>
         </div>
         </a>
        
-        <div class="pause-button" id="pause-btn-${index}" style="display:none;"><img src="./assets/img/playshort.png"></div>
+        <div class="pause-button" id="pause-btn-${index}" style="display:none;"><img src="/assets/img/playshort.png"></div>
 
-       <a href="./poster.html#short"><i class="bi bi-file-plus text-light fs-4" style="display:block; position:absolute; right:70px; top:23px"></i></a>
+       <a href="/poster.html#short"><i class="bi bi-file-plus text-light fs-4" style="display:block; position:absolute; right:70px; top:23px"></i></a>
        ${
          isOwner
            ? `<div style="display:block; position:absolute; right:30px; top:22px">
@@ -56,9 +56,9 @@ async function loadShorts() {
           class="video" loop></video>
          <div id="react"><img src="" width="128" alt="react" id="react-sticker-${short.id}" style="display:none;"></div>
         <div class="reaction-buttons">
-          <button class="btn btn-primary"><img src="./assets/img/like.png" alt="" width="24" onclick="like('${short.id}')"></button>
+          <button class="btn btn-primary"><img src="/assets/img/like.png" alt="" width="24" onclick="like('${short.id}')"></button>
           <span id="like-${short.id}" class="reacts  text-primary"></span>
-          <button class="btn btn-danger"><img src="./assets/img/dislike.png" alt="" width="24" onclick="dislike('${short.id}')" ></button>
+          <button class="btn btn-danger"><img src="/assets/img/dislike.png" alt="" width="24" onclick="dislike('${short.id}')" ></button>
           <span id="dislike-${short.id}" class="reacts text-danger"></span>
         </div>
         <p class="text-light description ms-3">${short.content}</p>
@@ -213,7 +213,7 @@ async function like(shortId) {
  if(error){console.log(error.message)}
 
  const react_sticker = document.getElementById(`react-sticker-${shortId}`);
- react_sticker.src = './assets/img/like.png';
+ react_sticker.src = '/assets/img/like.png';
  react_sticker.style.display= "block";
  react_sticker.classList.add("shake")
  setTimeout(() => {react_sticker.style.display= "none"},1000)
@@ -239,7 +239,7 @@ async function dislike(shortId) {
 if(error){console.log(error.message)}
 
 const react_sticker = document.getElementById(`react-sticker-${shortId}`);
-react_sticker.src = './assets/img/dislike.png';
+react_sticker.src = '/assets/img/dislike.png';
 react_sticker.style.display= "block";
 react_sticker.classList.add("shake")
 setTimeout(() => {react_sticker.style.display= "none"},1000)

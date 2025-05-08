@@ -90,8 +90,8 @@ window.addEventListener("DOMContentLoaded", () => {
       
       <div class="social-icons mt-3 d-flex justify-content-between w-100">
         <div>
-          <button class="btn btn-outline-primary mx-1"><img src="./assets/img/like.png" alt="like" width="24" onclick="like('${post.id}')"></button>
-          <button class="btn btn-outline-danger mx-1"><img src="./assets/img/dislike.png" alt="dislike" width="24" onclick="dislike('${post.id}')"></button>
+          <button class="btn btn-outline-primary mx-1"><img src="/assets/img/like.png" alt="like" width="24" onclick="like('${post.id}')"></button>
+          <button class="btn btn-outline-danger mx-1"><img src="/assets/img/dislike.png" alt="dislike" width="24" onclick="dislike('${post.id}')"></button>
           <span id="react-${post.id}"></span>
         </div>
         
@@ -167,7 +167,7 @@ async function downloadFile(imageUrl, fileName) {
   if(error){console.log(error.message)}
 
   const react_sticker = document.getElementById(`react-sticker-${postId}`);
-  react_sticker.src = './assets/img/like.png';
+  react_sticker.src = '/assets/img/like.png';
   react_sticker.style.display= "block";
   react_sticker.classList.add("shake")
   setTimeout(() => {react_sticker.style.display= "none"},1000)
@@ -194,7 +194,7 @@ async function downloadFile(imageUrl, fileName) {
   if(error){console.log(error.message)};
 
   const react_sticker = document.getElementById(`react-sticker-${postId}`);
-  react_sticker.src = './assets/img/dislike.png';
+  react_sticker.src = '/assets/img/dislike.png';
   react_sticker.style.display= "block";
   react_sticker.classList.add("shake")
   setTimeout(() => {react_sticker.style.display= "none"},1000);

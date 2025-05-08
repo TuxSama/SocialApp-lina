@@ -107,6 +107,17 @@ result.forEach(entry => {
   });
   
 }
+
+search.addEventListener("keydown",(e)=>{
+if(e.key === "Enter"){
+  document.getElementById("searchbtn").click();
+}
+})
+
 async function chat(userId) {
     window.location.href = `chat.html?userId=${userId}`;
 }
+
+
+
+

@@ -164,7 +164,6 @@ supabase
   msgInput.addEventListener("keydown", function (event) {
     if (event.key === "Enter") {
       document.getElementById("sendbtn").click();
-      console.log("clicked")
     }
   });
 

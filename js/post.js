@@ -194,6 +194,12 @@ document.addEventListener('keydown', function(e) {
   }
 });
 
+
+if (window.location.hash === '#short') {
+  var shortsTab = new bootstrap.Tab(document.querySelector('#shorts-tab'));
+  shortsTab.show();
+}
+
 function showLoader() {
   document.getElementById('loader').classList.remove('hidden');
 }

@@ -42,7 +42,7 @@ async function loadShorts() {
        
         <div class="pause-button" id="pause-btn-${index}" style="display:none;"><img src="./assets/img/playshort.png"></div>
 
-       <a href="poster.html"><i class="bi bi-file-plus text-light fs-4" style="display:block; position:absolute; right:70px; top:23px"></i></a>
+       <a href="./poster.html#short"><i class="bi bi-file-plus text-light fs-4" style="display:block; position:absolute; right:70px; top:23px"></i></a>
        ${
          isOwner
            ? `<div style="display:block; position:absolute; right:30px; top:22px">

@@ -1,6 +1,7 @@
 window.addEventListener("DOMContentLoaded", () => {
   fetchAndAssignProfile();
   loadPostes();
+  loadShorts()
   fetchUsers();
 });
 
@@ -24,6 +25,7 @@ const avatar = document.getElementById('profile-img');
 
 const fileInput = document.getElementById('profile-photo');
 const postes_container = document.getElementById('posts');
+const shorts_container = document.getElementById('shorts-container');
 const post_number = document.getElementById('post-number');
 const followers = document.getElementById('user-numberA');
 const following = document.getElementById('user-numberB');
@@ -204,6 +206,7 @@ async function uploadProfilePhoto(file) {
     .select("*, profiles(id, username, avatar_url,full_name)")
     .order('created_at', { ascending: false })
     .eq('user_id', userId)
+   
    if (post_number)
    { post_number.innerText = `${postes.length}`}
      
@@ -211,9 +214,14 @@ async function uploadProfilePhoto(file) {
      console.error("Error fetching profile:", error.message);
      return;
    }
+   if(!postes)return;
+   postes_container.innerHTML = "";
+
    for(const [index ,post] of postes.entries()){
-if(postes_container)
-     {postes_container.innerHTML += `
+   
+   if(postes_container)
+     {
+      postes_container.innerHTML += `
       <div class="post-card">
       
         <div class="d-flex align-items-center mb-2">
@@ -231,18 +239,21 @@ if(postes_container)
         <img src="${post.media_url}" alt="Post Image">
         <div class="mt-4" id="react-${post.id}"></div>
       </div>`;
-      await loadReactions(post.id)
+      await loadPostReactions(post.id)
     }
  }
  
    }
-   async function loadReactions(postId){
+
+   
+ async function loadPostReactions(postId){
     const {data : reactions} = await supabase
     .from('reactions')
     .select('user_id , is_like')
     .eq('post_id',postId)
      let likes = 0;
      let dislikes = 0;
+     
      const react = document.getElementById(`react-${postId}`)
     for (const react of reactions){
       if(react.is_like){
@@ -269,10 +280,51 @@ if(postes_container)
    }
   }
 
+  async function loadShorts() {
+    userId = localStorage.getItem("userId");
+    const { data: shorts, error } = await supabase
+      .from("shorts")
+      .select("*,reactions(is_like)")
+      .order("created_at", { ascending: false })
+      .eq('user_id', userId);
+      if(!shorts)return;
+      shorts_container.innerHTML="";
+    for (const short of shorts) {
+      shorts_container.innerHTML += `
+       <div><video src="${short.media_url}" muted class="short" onclick=watch('${short.id}')></video>
+       <div class="ms-3" id="react-${short.id}"></div>
+       </div>
+    `;
+    await loadShortReactions(short.id)
+    }
+  }
+
+  async function loadShortReactions(shortId){
+    const {data : reactions} = await supabase
+    .from('reactions')
+    .select('user_id , is_like')
+    .eq('short_id',shortId)
+     let likes = 0;
+     let dislikes = 0;
+     const react = document.getElementById(`react-${shortId}`)
+    for (const react of reactions){
+      if(react.is_like){
+       likes+=1
+      }
+      else if(!react.is_like){
+       dislikes+=1
+      }
+    }
+     react.innerHTML = `<small class="text-primary">${likes} Likes</small> <small class="text-danger" >${dislikes} Dislike</small>`
+   }
 
 function showLoader() {
   document.getElementById('loader').classList.remove('hidden');
 }
 function hideLoader() {
   document.getElementById('loader').classList.add('hidden');
+}
+
+async function watch(shortId) {
+  window.location.href = `shorts.html?short_id=${shortId}`;
 }

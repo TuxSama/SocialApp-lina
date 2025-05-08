@@ -12,7 +12,7 @@ const avatar = document.getElementById('avatar');
 const chat_Box = document.getElementById('chat-body');
 const msgInput = document.getElementById('msgInput')
 
-console.log(receiverId);
+
 
 if(!receiverId || receiverId == "undefined" ){
   window.location.href= "message.html"
@@ -48,7 +48,6 @@ async function loadMessages() {
     .select("*")
     .or(`and(sender_id.eq.${senderId},receiver_id.eq.${receiverId}),and(sender_id.eq.${receiverId},receiver_id.eq.${senderId})`)
     .order("created_at", { ascending: true });
-    console.log(data)
   if (error) return console.error("Load error:", error);
      chat_Box.innerHTML = "";
      data.forEach(displayMessage);
@@ -159,6 +158,16 @@ supabase
     }
   )
   .subscribe();
+
+
+
+  msgInput.addEventListener("keydown", function (event) {
+    if (event.key === "Enter") {
+      document.getElementById("sendbtn").click();
+      console.log("clicked")
+    }
+  });
+
 
 document.addEventListener('wheel', function(e) {
     if (e.ctrlKey) {

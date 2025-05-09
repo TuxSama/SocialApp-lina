@@ -1,7 +1,11 @@
+const supabaseUrl = "https://qjbzocrygwczpuslbpbh.supabase.co";
+const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqYnpvY3J5Z3djenB1c2xicGJoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU5MjUyMjksImV4cCI6MjA2MTUwMTIyOX0.b2zV3ZT3SMVs6I_wTn4QKgQzY9y3NgqcliIpLp_Ef9I"; 
+const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
 const signup_form = document.getElementById('signup-form');
 const login_form = document.getElementById('login-form');
 const errorBox = document.getElementById('error');
+
 if (signup_form) {
   signup_form.addEventListener("submit", async function (e) {
     e.preventDefault();
@@ -13,7 +17,7 @@ if (signup_form) {
     const username = document.getElementById("signup-username").value.trim();
     const name = document.getElementById("signup-name").value.trim();
 
-    const avatar_url = "assets/img/avatar.png";  
+    const avatar_url = "/assets/img/avatar.png";  
 
  
     if (!email || !password || !username || !name) {

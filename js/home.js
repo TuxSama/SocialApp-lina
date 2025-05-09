@@ -1,3 +1,4 @@
+
 window.addEventListener("DOMContentLoaded", () => {
     fetchAndAssignProfile();
     loadPostes();
@@ -7,25 +8,34 @@ window.addEventListener("DOMContentLoaded", () => {
   const postes_container = document.getElementById('postes');
  
   let avatarUrl  = null ;
-
-  async function fetchAndAssignProfile(){
-    userId = localStorage.getItem("userId");
-
+  const userId = localStorage.getItem("userId");
+  async function fetchAndAssignProfile() {
+    if (!userId) {
+      console.error("No userId found in localStorage.");
+      return;
+    }
+  
     const { data: profile, error } = await supabase
-    .from("profiles")
-    .select("avatar_url")
-    .eq("id", userId)
-    .single();
-
-  if (error) {
-    console.error("Error fetching profile:", error.message);
-    return;
+      .from("profiles")
+      .select("avatar_url")
+      .eq("id", userId)
+      .single();
+  
+    if (error) {
+      console.error("Error fetching profile:", error.message);
+      return;
+    }
+  
+    avatarUrl = profile.avatar_url;
+    console.log('avatarUrl:', avatarUrl); // Log the actual avatarUrl value
+    
+    // Assign the avatar image if both avatar and avatarUrl are valid
+    if (avatar && avatarUrl) {
+      avatar.src = avatarUrl;
+    } else {
+      console.warn("Avatar or avatarUrl is missing.");
+    }
   }
-
-  avatarUrl = profile.avatar_url;
-  if (avatar && avatarUrl) avatar.src = avatarUrl;
-  }
-
 
   async function loadPostes(){
    const { data : postes ,error} = await supabase

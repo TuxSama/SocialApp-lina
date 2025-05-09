@@ -10,9 +10,9 @@ window.addEventListener("DOMContentLoaded", () => {
 
 let observer;
 const shortes_container = document.getElementById("shortes");
-
+const userId = localStorage.getItem("userId");
 async function loadShorts() {
-  userId = localStorage.getItem("userId");
+  
   const { data: shorts, error } = await supabase
     .from("shorts")
     .select("*, profiles(id, username, avatar_url, full_name)")
@@ -83,7 +83,6 @@ async function loadShorts() {
 }
 
 async function loadShortById(shortId) {
-  userId = localStorage.getItem("userId");
   const { data: shorts, error } = await supabase
     .from("shorts")
     .select("*, profiles(id, username, avatar_url, full_name)")
@@ -174,7 +173,7 @@ function setupIntersectionObserver() {
           pauseBtn.style.display = "flex";
         });
         const shortId = entry.target.id;
-        window.history.pushState(null, '', `?short_id=${shortId}`);
+        window.history.replaceState(null, '', `?short_id=${shortId}`);
         } else {
         video.pause();
         pauseBtn.style.display = "flex";
@@ -201,7 +200,7 @@ function togglePlayPause(video, pauseBtn) {
 }
 
 async function like(shortId) {
- userId = localStorage.getItem("userId");
+ 
  const {error} = await supabase
  .from('reactions')
  .upsert([
@@ -227,7 +226,7 @@ async function like(shortId) {
 }
 
 async function dislike(shortId) {
- userId = localStorage.getItem("userId");
+ 
  const {error} = await supabase
  .from('reactions')
  .upsert([
@@ -258,8 +257,7 @@ async function deleteshort(shortId) {
   if (error) {
     console.error("Error deleting post:", error.message);
   } else {
-    console.log("Post deleted:", shortId);
-    document.getElementById(`short-container-${shortId}`).remove();
+    window.location.reload();
   }
 }
 

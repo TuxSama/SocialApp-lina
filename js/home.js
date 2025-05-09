@@ -92,7 +92,6 @@ await loadPostReactions(post.id)
 }
 
  async function like(postId) {
-  userId = localStorage.getItem("userId");
   const {error} = await supabase
   .from('reactions')
   .upsert([
@@ -119,7 +118,6 @@ await loadPostReactions(post.id)
  }
  
  async function dislike(postId) {
-  userId = localStorage.getItem("userId");
   const {error} = await supabase
   .from('reactions')
   .upsert([

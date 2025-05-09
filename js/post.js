@@ -182,18 +182,6 @@ const shortContent = document.getElementById('short-content');
       }
  }
 
- document.addEventListener('wheel', function(e) {
-  if (e.ctrlKey) {
-    e.preventDefault();
-  }
-}, { passive: false });
-
-document.addEventListener('keydown', function(e) {
-  if (e.ctrlKey && (e.key === '+' || e.key === '-' || e.key === '=')) {
-    e.preventDefault();
-  }
-});
-
 
 if (window.location.hash === '#short') {
   var shortsTab = new bootstrap.Tab(document.querySelector('#shorts-tab'));
@@ -202,11 +190,4 @@ if (window.location.hash === '#short') {
 
 function goBack() {
   window.history.back(); 
-}
-
-function showLoader() {
-  document.getElementById('loader').classList.remove('hidden');
-}
-function hideLoader() {
-  document.getElementById('loader').classList.add('hidden');
 }

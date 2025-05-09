@@ -1,27 +1,3 @@
-const supabaseUrl = "https://qjbzocrygwczpuslbpbh.supabase.co";
-const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqYnpvY3J5Z3djenB1c2xicGJoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU5MjUyMjksImV4cCI6MjA2MTUwMTIyOX0.b2zV3ZT3SMVs6I_wTn4QKgQzY9y3NgqcliIpLp_Ef9I"; 
-const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
-
-const signup_form = document.getElementById("signup-form");
-const login_form = document.getElementById("login-form");
-const errorBox = document.getElementById("error");
-
-async function checkAuth() {
-  const { data: { session } } = await supabase.auth.getSession();
-  const currentPage = window.location.pathname.split("/").pop();
-
-  if (!session && currentPage !== "inscription.html" && currentPage !== "se_connecter.html") {
-    window.location.href = "se_connecter.html";
-  }
-
-  if (session && (currentPage === "se_connecter.html" || currentPage === "inscription.html")) {
-    window.location.href = "accueil.html";
-  }
-  console.log(currentPage)
-}
-
-
-
 if (signup_form) {
   signup_form.addEventListener("submit", async function (e) {
     e.preventDefault();
@@ -130,13 +106,6 @@ if (login_form) {
     }
   });
 }
-
-
-
-  checkAuth(); 
-
-
-
 function showError(message) {
   errorBox.textContent = message;
   errorBox.className = 'alert alert-danger';
@@ -170,23 +139,3 @@ function handleAuthError(error) {
   console.error("Auth error:", error);
 
 }
-
-async function logout() {
-    await supabase.auth.signOut();
-    localStorage.removeItem("userId");
-    window.location.href = "se_connecter.html";
-
-  } 
-
-  document.addEventListener('wheel', function(e) {
-    if (e.ctrlKey) {
-      e.preventDefault();
-    }
-  }, { passive: false });
-  
-  document.addEventListener('keydown', function(e) {
-    if (e.ctrlKey && (e.key === '+' || e.key === '-' || e.key === '=')) {
-      e.preventDefault();
-    }
-  });
-  

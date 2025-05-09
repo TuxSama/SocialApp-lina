@@ -8,22 +8,6 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-document.addEventListener(
-  "wheel",
-  function (e) {
-    if (e.ctrlKey) {
-      e.preventDefault();
-    }
-  },
-  { passive: false }
-);
-
-document.addEventListener("keydown", function (e) {
-  if (e.ctrlKey && (e.key === "+" || e.key === "-" || e.key === "=")) {
-    e.preventDefault();
-  }
-});
-
 let observer;
 const shortes_container = document.getElementById("shortes");
 
@@ -76,7 +60,7 @@ async function loadShorts() {
           </a>
         </div>
       </div>`;
-    await loadReactions(short.id);
+    await loadShortReactions(short.id);
   }
 
   document.querySelectorAll(".short-container").forEach((container) => {
@@ -148,7 +132,7 @@ async function loadShortById(shortId) {
       </div>
     </div>`;
 
-  await loadReactions(short.id);
+  await loadShortReactions(short.id);
 }
   document.querySelectorAll(".short-container").forEach((container) => {
     container.addEventListener("click", function (e) {
@@ -216,30 +200,6 @@ function togglePlayPause(video, pauseBtn) {
   }
 }
 
-async function loadReactions(shortId) {
-  const { data: reactions } = await supabase
-    .from('reactions')
-    .select('user_id, is_like')
-    .eq('short_id', shortId);
-
-  let likes = 0;
-  let dislikes = 0;
-  const likes_react = document.getElementById(`like-${shortId}`);
-  const dislikes_react = document.getElementById(`dislike-${shortId}`);
-
-  for (const react of reactions) {
-    if (react.is_like) {
-      likes += 1;
-    } else {
-      dislikes += 1;
-    }
-  }
-
-  likes_react.innerText = `${likes}`;
-  dislikes_react.innerText = `${dislikes}`;
-}
-
-
 async function like(shortId) {
  userId = localStorage.getItem("userId");
  const {error} = await supabase
@@ -263,7 +223,7 @@ async function like(shortId) {
  react_sticker.classList.add("shake")
  setTimeout(() => {react_sticker.style.display= "none"},1000)
 
- await loadReactions(shortId)
+ await loadShortReactions(shortId)
 }
 
 async function dislike(shortId) {
@@ -289,7 +249,7 @@ react_sticker.style.display= "block";
 react_sticker.classList.add("shake")
 setTimeout(() => {react_sticker.style.display= "none"},1000)
 
-await loadReactions(shortId)
+await loadShortReactions(shortId)
 }
 
 async function deleteshort(shortId) {
@@ -303,26 +263,6 @@ async function deleteshort(shortId) {
   }
 }
 
-async function downloadFile(shortUrl, fileName) {
-  try {
-    const response = await fetch(shortUrl);
-    const blob = await response.blob();
-    const url = URL.createObjectURL(blob);
-
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = fileName;
-    document.body.appendChild(a);
-    a.click();
-
-    setTimeout(() => {
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    }, 100);
-  } catch (error) {
-    console.error("Download failed:", error);
-  }
-}
 
 function goBack() {
   window.history.back(); 

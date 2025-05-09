@@ -1,5 +1,4 @@
 window.addEventListener('DOMContentLoaded',()=>{
-  
   loadUsers()
 })
 
@@ -105,8 +104,6 @@ if (
 }
 });
 
-console.log(messages);
-
 const currentUserId = senderId;
 
 const result = Object.values(lastMessages).map(msg => {
@@ -159,24 +156,11 @@ supabase
   )
   .subscribe();
 
-
-
+  
   msgInput.addEventListener("keydown", function (event) {
     if (event.key === "Enter") {
       document.getElementById("sendbtn").click();
     }
   });
 
-
-document.addEventListener('wheel', function(e) {
-    if (e.ctrlKey) {
-      e.preventDefault();
-    }
-  }, { passive: false });
-  
-  document.addEventListener('keydown', function(e) {
-    if (e.ctrlKey && (e.key === '+' || e.key === '-' || e.key === '=')) {
-      e.preventDefault();
-    }
-  });
   

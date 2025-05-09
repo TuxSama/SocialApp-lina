@@ -5,20 +5,6 @@ window.addEventListener("DOMContentLoaded", () => {
   fetchUsers();
 });
 
-
-document.addEventListener('wheel', function(e) {
-  if (e.ctrlKey) {
-    e.preventDefault();
-  }
-}, { passive: false });
-
-document.addEventListener('keydown', function(e) {
-  if (e.ctrlKey && (e.key === '+' || e.key === '-' || e.key === '=')) {
-    e.preventDefault();
-  }
-});
-
-
 const nomfield = document.getElementById('name');
 const usernamefield = document.getElementById('username');
 const avatar = document.getElementById('profile-img');
@@ -192,14 +178,7 @@ async function uploadProfilePhoto(file) {
     }
   }
 
-  async function getDaysAgo(posttamp) {
-    const date = new Date(posttamp);
-    const now = new Date();
-    const diffMs = now - date;
-    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-    return diffDays === 0 ? "today" : `${diffDays} days ago`;
-  }
-
+  
   async function loadPostes(){
     const { data : postes ,error} = await supabase
     .from("posts")
@@ -214,7 +193,7 @@ async function uploadProfilePhoto(file) {
      console.error("Error fetching profile:", error.message);
      return;
    }
-   if(!postes)return;
+   if(!postes || !postes_container)return;
    postes_container.innerHTML = "";
 
    for(const [index ,post] of postes.entries()){
@@ -244,42 +223,6 @@ async function uploadProfilePhoto(file) {
  }
  
    }
-
-   
- async function loadPostReactions(postId){
-    const {data : reactions} = await supabase
-    .from('reactions')
-    .select('user_id , is_like')
-    .eq('post_id',postId)
-     let likes = 0;
-     let dislikes = 0;
-     
-     const react = document.getElementById(`react-${postId}`)
-    for (const react of reactions){
-      if(react.is_like){
-       likes+=1
-      }
-      else if(!react.is_like){
-       dislikes+=1
-      }
-    }
-   react.innerHTML = `<span class="text-primary">${likes} Likes</span> <span class="text-danger" >${dislikes} Dislike</span>`
-   }
-
-  async function deletepost(postId){
-   if(!confirm("are you sure you want to delete this post "))return;
-    const {error} = await supabase
-    .from('posts')
-    .delete()
-    .eq('id' , postId)
-    if (error) {
-     console.error("Error deleting post:", error.message);
-   } else {
-     console.log("Post deleted:", postId);
-     location.reload();
-   }
-  }
-
   async function loadShorts() {
     userId = localStorage.getItem("userId");
     const { data: shorts, error } = await supabase
@@ -287,7 +230,7 @@ async function uploadProfilePhoto(file) {
       .select("*,reactions(is_like)")
       .order("created_at", { ascending: false })
       .eq('user_id', userId);
-      if(!shorts)return;
+      if(!shorts || !shorts_container)return;
       shorts_container.innerHTML="";
     for (const short of shorts) {
       shorts_container.innerHTML += `
@@ -298,32 +241,6 @@ async function uploadProfilePhoto(file) {
     await loadShortReactions(short.id)
     }
   }
-
-  async function loadShortReactions(shortId){
-    const {data : reactions} = await supabase
-    .from('reactions')
-    .select('user_id , is_like')
-    .eq('short_id',shortId)
-     let likes = 0;
-     let dislikes = 0;
-     const react = document.getElementById(`react-${shortId}`)
-    for (const react of reactions){
-      if(react.is_like){
-       likes+=1
-      }
-      else if(!react.is_like){
-       dislikes+=1
-      }
-    }
-     react.innerHTML = `<small class="text-primary">${likes} Likes</small> <small class="text-danger" >${dislikes} Dislike</small>`
-   }
-
-function showLoader() {
-  document.getElementById('loader').classList.remove('hidden');
-}
-function hideLoader() {
-  document.getElementById('loader').classList.add('hidden');
-}
 
 async function watch(shortId) {
   window.location.href = `shorts.html?short_id=${shortId}`;

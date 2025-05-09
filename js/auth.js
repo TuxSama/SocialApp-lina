@@ -147,3 +147,19 @@ function handleAuthError(error) {
   console.error("Auth error:", error);
 
 }
+
+async function checkLoggedIn() {
+  const { data: { session }, error } = await supabase.auth.getSession();
+
+  if (error) {
+    console.error("Error fetching session:", error.message);
+    return;
+  }
+
+  if (session) {
+   
+    window.location.href = "accueil.html";
+  }
+}
+
+checkLoggedIn();

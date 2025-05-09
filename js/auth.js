@@ -1,7 +1,7 @@
 
 const signup_form = document.getElementById('signup-form');
 const login_form = document.getElementById('login-form');
-
+const errorBox = document.getElementById('error');
 if (signup_form) {
   signup_form.addEventListener("submit", async function (e) {
     e.preventDefault();

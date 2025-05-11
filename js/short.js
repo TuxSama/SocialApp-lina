@@ -1,4 +1,5 @@
 window.addEventListener("DOMContentLoaded", () => {
+  checkAuth()
   const urlParams = new URLSearchParams(window.location.search);
   const shortId = urlParams.get('short_id');
   if (shortId) {
@@ -326,4 +327,18 @@ async function downloadFile(shortUrl, fileName) {
 
 function goBack() {
   window.history.back(); 
+}
+
+async function checkAuth() {
+  const { data: { session } } = await supabase.auth.getSession();
+  const currentPage = window.location.pathname.split("/").pop();
+
+  if (!session && currentPage !== "inscription.html" && currentPage !== "se_connecter.html") {
+    window.location.href = "se_connecter.html";
+  }
+  if (session) {
+    if (currentPage === "se_connecter.html") {
+      window.location.href = "accueil.html";
+    }
+  }
 }

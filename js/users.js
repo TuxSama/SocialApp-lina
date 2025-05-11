@@ -1,4 +1,5 @@
 window.addEventListener('DOMContentLoaded' ,function(){
+  checkAuth();
     loadUsers();
 } )
 
@@ -119,5 +120,18 @@ async function chat(userId) {
 }
 
 
+async function checkAuth() {
+  const { data: { session } } = await supabase.auth.getSession();
+  const currentPage = window.location.pathname.split("/").pop();
+
+  if (!session && currentPage !== "inscription.html" && currentPage !== "se_connecter.html") {
+    window.location.href = "se_connecter.html";
+  }
+  if (session) {
+    if (currentPage === "se_connecter.html") {
+      window.location.href = "accueil.html";
+    }
+  }
+}
 
 

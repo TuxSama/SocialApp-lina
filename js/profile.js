@@ -1,4 +1,5 @@
 window.addEventListener("DOMContentLoaded", () => {
+  checkAuth();
   fetchAndAssignProfile();
   loadPostes();
   loadShorts()
@@ -327,4 +328,17 @@ function hideLoader() {
 
 async function watch(shortId) {
   window.location.href = `shorts.html?short_id=${shortId}`;
+}
+async function checkAuth() {
+  const { data: { session } } = await supabase.auth.getSession();
+  const currentPage = window.location.pathname.split("/").pop();
+
+  if (!session && currentPage !== "inscription.html" && currentPage !== "se_connecter.html") {
+    window.location.href = "se_connecter.html";
+  }
+  if (session) {
+    if (currentPage === "se_connecter.html") {
+      window.location.href = "accueil.html";
+    }
+  }
 }

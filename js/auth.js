@@ -6,22 +6,6 @@ const signup_form = document.getElementById("signup-form");
 const login_form = document.getElementById("login-form");
 const errorBox = document.getElementById("error");
 
-async function checkAuth() {
-  const { data: { session } } = await supabase.auth.getSession();
-  const currentPage = window.location.pathname.split("/").pop();
-
-  if (!session && currentPage !== "inscription.html" && currentPage !== "se_connecter.html") {
-    window.location.href = "se_connecter.html";
-  }
-  if (session) {
-    if (currentPage === "inscription.html" || currentPage === "se_connecter.html") {
-      window.location.href = "accueil.html";
-    }
-  }
-}
-
-
-
 if (signup_form) {
   signup_form.addEventListener("submit", async function (e) {
     e.preventDefault();

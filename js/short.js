@@ -190,7 +190,7 @@ function setupIntersectionObserver() {
           pauseBtn.style.display = "flex";
         });
         const shortId = entry.target.id;
-        window.history.pushState(null, '', `?short_id=${shortId}`);
+        window.history.replaceState(null, '', `?short_id=${shortId}`);
         } else {
         video.pause();
         pauseBtn.style.display = "flex";

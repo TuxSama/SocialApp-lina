@@ -13,11 +13,11 @@ async function checkAuth() {
   if (!session && currentPage !== "inscription.html" && currentPage !== "se_connecter.html") {
     window.location.href = "se_connecter.html";
   }
-
-  if (session && (currentPage === "se_connecter.html" || currentPage === "inscription.html")) {
-    window.location.href = "accueil.html";
+  if (session) {
+    if (currentPage === "inscription.html" || currentPage === "se_connecter.html") {
+      window.location.href = "accueil.html";
+    }
   }
-  console.log(currentPage)
 }
 
 
